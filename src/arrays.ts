@@ -26,7 +26,7 @@ export function repeat<T>(something: T, amount: number): T[] {
 type EqualsFunc<T> = (a: T, b: T) => boolean;
 
 /**
- * Returns the same array, with the duplicates removes. The given
+ * Returns the same array, with the duplicates removed. The given
  * {@link equalsFunc} is used to determine if two items should be considered
  * duplicates.
  * @param array The array.

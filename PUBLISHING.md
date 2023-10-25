@@ -1,4 +1,24 @@
-# Publishing the package
+# Publishing and commits
+
+## Committing to the repo
+
+The `@commitlint/config-conventional` plugin enforces that the commit message must start with one of the following prefixes:
+
+- build
+- chore
+- ci
+- docs
+- feat
+- fix
+- perf
+- refactor
+- revert
+- style
+- test
+
+E.g. `fix: clean readme/publishing doc` or `feat: migrate from schel-d-utils`.
+
+## Publishing the package
 
 To publish a new release of this package to npm:
 
