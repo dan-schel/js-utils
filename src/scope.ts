@@ -27,6 +27,28 @@ export function nonNull<T>(value: T | null): value is T {
  * @param val The value.
  */
 export function itsOk<T>(val: T | undefined | null): T {
-  if (val == null) { throw new Error("Expected non-null value."); }
+  if (val == null) {
+    throw new Error("Expected non-null value.");
+  }
   return val;
+}
+
+/**
+ * Returns true if both items equal, even if that's because both are null.
+ * @param a The first value.
+ * @param b The second value.
+ * @param equalsFunc When the values are non-null, this checks if they're equal.
+ */
+export function nullableEquals<T>(
+  a: T | null,
+  b: T | null,
+  equalsFunc: (a: T, b: T) => boolean
+): boolean {
+  if (a == null) {
+    return b == null;
+  } else if (b == null) {
+    return false;
+  } else {
+    return equalsFunc(a, b);
+  }
 }
