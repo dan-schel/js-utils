@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 /**
  * Parses an integer. Throws an error if the string given is not an integer (it
  * contains decimals, text, or illegal symbols).
@@ -99,23 +97,5 @@ export class NumberRange {
       return this.min.toString();
     }
     return `${this.min}..${this.max}`;
-  }
-
-  /** A Zod-schema for matching number range strings, e.g. "4" or "2..5.5". */
-  static readonly json = z.string().transform((x, ctx) => {
-    const result = NumberRange.parse(x);
-    if (result == null) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Not a valid number range.",
-      });
-      return z.NEVER;
-    }
-    return result;
-  });
-
-  /** E.g. "4" or "2..5.5". */
-  toJSON(): z.input<typeof NumberRange.json> {
-    return this.asString();
   }
 }
