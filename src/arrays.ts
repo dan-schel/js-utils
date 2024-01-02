@@ -6,7 +6,7 @@
  * @param end The ending number (exclusive).
  */
 export function range(start: number, end: number): number[] {
-  return [...Array(end - start).keys()].map(x => x + start);
+  return [...Array(end - start).keys()].map((x) => x + start);
 }
 
 /**
@@ -44,7 +44,7 @@ export function unique<T>(array: T[], equalsFunc?: EqualsFunc<T>): T[] {
   const result: T[] = [];
 
   for (const item of array) {
-    if (result.some(i => equalsFunc(i, item))) {
+    if (result.some((i) => equalsFunc(i, item))) {
       continue;
     }
 
@@ -66,7 +66,7 @@ export function areUnique(array: string[]): boolean;
 export function areUnique(array: number[]): boolean;
 export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean;
 export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean {
-  return array.length == unique(array, equalsFunc).length;
+  return array.length === unique(array, equalsFunc).length;
 }
 
 /**
@@ -79,23 +79,35 @@ export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean {
  */
 export function arraysMatch(a: string[], b: string[]): boolean;
 export function arraysMatch(a: number[], b: number[]): boolean;
-export function arraysMatch<T>(a: T[], b: T[], equalsFunc?: EqualsFunc<T>): boolean;
-export function arraysMatch<T>(a: T[], b: T[], equalsFunc?: EqualsFunc<T>): boolean {
+export function arraysMatch<T>(
+  a: T[],
+  b: T[],
+  equalsFunc?: EqualsFunc<T>
+): boolean;
+export function arraysMatch<T>(
+  a: T[],
+  b: T[],
+  equalsFunc?: EqualsFunc<T>
+): boolean {
   // If both arrays are empty, they match!
-  if (a.length == 0 && b.length == 0) { return true; }
+  if (a.length === 0 && b.length === 0) {
+    return true;
+  }
 
   // If one array is empty (and not the other), they dont match!
-  if (a.length == 0 || b.length == 0) { return false; }
+  if (a.length === 0 || b.length === 0) {
+    return false;
+  }
 
   // Fallback to equals comparisons if needed.
-  const comparer = equalsFunc == null
-    ? (a: T, b: T) => a == b
-    : equalsFunc;
+  const comparer = equalsFunc == null ? (a: T, b: T) => a === b : equalsFunc;
 
   // Check that for each value in a, b has at least one equal value, and
   // vice-versa.
-  return a.every(c => b.some(d => comparer(c, d))) &&
-    b.every(d => a.some(c => comparer(c, d)));
+  return (
+    a.every((c) => b.some((d) => comparer(c, d))) &&
+    b.every((d) => a.some((c) => comparer(c, d)))
+  );
 }
 
 /**

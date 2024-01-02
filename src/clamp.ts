@@ -24,9 +24,13 @@ export function clamp(x: number, a: number, b: number): number {
  * @param outA The output range's first boundary.
  * @param outB The output range's second boundary.
  */
-export function map(x: number, inA: number, inB: number, outA: number,
-  outB: number): number {
-
+export function map(
+  x: number,
+  inA: number,
+  inB: number,
+  outA: number,
+  outB: number
+): number {
   return ((x - inA) / (inB - inA)) * (outB - outA) + outA;
 }
 
@@ -40,8 +44,12 @@ export function map(x: number, inA: number, inB: number, outA: number,
  * @param outA The output range's first boundary.
  * @param outB The output range's second boundary.
  */
-export function mapClamp(x: number, inA: number, inB: number, outA: number,
-  outB: number): number {
-
+export function mapClamp(
+  x: number,
+  inA: number,
+  inB: number,
+  outA: number,
+  outB: number
+): number {
   return clamp(map(x, inA, inB, outA, outB), outA, outB);
 }

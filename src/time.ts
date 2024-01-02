@@ -20,7 +20,9 @@ export function tryParseUserTimeString(input: string): Time | null {
   // Does NOT match: "8", "1600", "8:0 pm"
   const regex = /^[0-9]{1,2}([:.][0-9]{2}( ?[ap]m)?| ?[ap]m)$/g;
 
-  if (!regex.test(standardInput)) { return null; }
+  if (!regex.test(standardInput)) {
+    return null;
+  }
 
   // Split the string into components, e.g. "9:00am" becomes ["9", "00", "am"]
   // and "14.50" becomes ["14", "50"].
@@ -36,9 +38,11 @@ export function tryParseUserTimeString(input: string): Time | null {
 
   // There will always 2-3 components, but the second component could be either
   // am/pm, or a minute value.
-  if (components[1] == "am" || components[1] == "pm") {
+  if (components[1] === "am" || components[1] === "pm") {
     const half = components[1];
-    if (hour < 1 || hour > 12) { return null; }
+    if (hour < 1 || hour > 12) {
+      return null;
+    }
 
     const minute = 0;
     return { hour: hour12To24(hour, half), minute: minute };
@@ -46,16 +50,22 @@ export function tryParseUserTimeString(input: string): Time | null {
 
   // If it's not "am" or "pm", then it's guaranteed to be a minute value.
   const minute = parseIntThrow(components[1]);
-  if (minute > 59) { return null; }
+  if (minute > 59) {
+    return null;
+  }
 
-  if (components.length == 3) {
+  if (components.length === 3) {
     const half = components[2] as "am" | "pm";
-    if (hour < 1 || hour > 12) { return null; }
+    if (hour < 1 || hour > 12) {
+      return null;
+    }
     return { hour: hour12To24(hour, half), minute: minute };
   }
 
   // If there's no third component, then treat the time as a 24-hour time.
-  if (hour > 23) { return null; }
+  if (hour > 23) {
+    return null;
+  }
   return { hour: hour, minute: minute };
 }
 
@@ -67,7 +77,7 @@ export function tryParseUserTimeString(input: string): Time | null {
  * @param half The half of the day (either "am" or "pm").
  */
 export function hour12To24(hour: number, half: "am" | "pm"): number {
-  return (hour % 12) + (half == "pm" ? 12 : 0);
+  return (hour % 12) + (half === "pm" ? 12 : 0);
 }
 
 /**
@@ -76,9 +86,9 @@ export function hour12To24(hour: number, half: "am" | "pm"): number {
  * between 0 and 23 (inclusive).
  * @param hour The 24-hour formatted hour.
  */
-export function hour24To12(hour: number): { hour: number, half: "am" | "pm" } {
+export function hour24To12(hour: number): { hour: number; half: "am" | "pm" } {
   return {
     hour: posMod(hour - 1, 12) + 1,
-    half: hour < 12 ? "am" : "pm"
+    half: hour < 12 ? "am" : "pm",
   };
 }

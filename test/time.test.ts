@@ -1,5 +1,4 @@
-import { hour12To24, hour24To12, tryParseUserTimeString }
-  from "../src/index";
+import { hour12To24, hour24To12, tryParseUserTimeString } from "../src/index";
 
 test("hour12To24", () => {
   expect(hour12To24(12, "am")).toStrictEqual(0);
@@ -26,13 +25,28 @@ test("hour24To12", () => {
 });
 
 test("tryParseUserTimeString", () => {
-  expect(tryParseUserTimeString("12:00am")).toStrictEqual({ hour: 0, minute: 0 });
-  expect(tryParseUserTimeString("1.57pm")).toStrictEqual({ hour: 13, minute: 57 });
+  expect(tryParseUserTimeString("12:00am")).toStrictEqual({
+    hour: 0,
+    minute: 0,
+  });
+  expect(tryParseUserTimeString("1.57pm")).toStrictEqual({
+    hour: 13,
+    minute: 57,
+  });
   expect(tryParseUserTimeString("1 pm")).toStrictEqual({ hour: 13, minute: 0 });
-  expect(tryParseUserTimeString("8:45 am")).toStrictEqual({ hour: 8, minute: 45 });
+  expect(tryParseUserTimeString("8:45 am")).toStrictEqual({
+    hour: 8,
+    minute: 45,
+  });
   expect(tryParseUserTimeString("8:45")).toStrictEqual({ hour: 8, minute: 45 });
-  expect(tryParseUserTimeString("16:45")).toStrictEqual({ hour: 16, minute: 45 });
-  expect(tryParseUserTimeString("21.59")).toStrictEqual({ hour: 21, minute: 59 });
+  expect(tryParseUserTimeString("16:45")).toStrictEqual({
+    hour: 16,
+    minute: 45,
+  });
+  expect(tryParseUserTimeString("21.59")).toStrictEqual({
+    hour: 21,
+    minute: 59,
+  });
 
   expect(tryParseUserTimeString("21.60")).toBeNull();
   expect(tryParseUserTimeString("13:45 pm")).toBeNull();

@@ -80,7 +80,7 @@ export class NumberRange {
     }
 
     const components = input.split("..");
-    if (components.length != 2) {
+    if (components.length !== 2) {
       return null;
     }
     const min = parseFloat(components[0]);
@@ -93,7 +93,7 @@ export class NumberRange {
 
   /** E.g. "4" or "2..5.5". */
   asString(): string {
-    if (this.min == this.max) {
+    if (this.min === this.max) {
       return this.min.toString();
     }
     return `${this.min}..${this.max}`;

@@ -18,5 +18,6 @@ module.exports = {
   rules: {
     semi: "warn",
     "max-len": ["warn", { code: 90 }],
+    eqeqeq: ["error", "always", { null: "ignore" }],
   },
 };

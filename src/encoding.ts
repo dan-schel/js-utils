@@ -16,7 +16,8 @@ export const base36 = "0123456789abcdefghijklmnopqrstuvwxyz";
  * An encoding/decoding alphabet using decimal numbers, lowercase letters,
  * uppercase letters, underscores, and dashes.
  */
-export const base64 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+export const base64 =
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 
 /**
  * An encoding/decoding alphabet similar to base64, but with some letters and
@@ -34,7 +35,11 @@ export const base48Safe = "2345679bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
  * @param fromAlpha The alphabet the input string is using, e.g. decimal.
  * @param toAlpha The alphabet the output string should use, e.g. base-64.
  */
-export function reencode(input: string, fromAlpha: string, toAlpha: string): string {
+export function reencode(
+  input: string,
+  fromAlpha: string,
+  toAlpha: string
+): string {
   return stringFromValue(stringToValue(input, fromAlpha, true), toAlpha);
 }
 
@@ -48,9 +53,14 @@ export function reencode(input: string, fromAlpha: string, toAlpha: string): str
  * @param toAlpha The alphabet the output string should use, e.g. base-64.
  */
 export function tryReencode(
-  input: string, fromAlpha: string, toAlpha: string): string | null {
+  input: string,
+  fromAlpha: string,
+  toAlpha: string
+): string | null {
   const value = stringToValue(input, fromAlpha, false);
-  if (value == null) { return null; }
+  if (value == null) {
+    return null;
+  }
   return stringFromValue(value, toAlpha);
 }
 
@@ -66,10 +76,16 @@ export function tryReencode(
  * instead return null.
  */
 function stringToValue(input: string, alpha: string, throwOnFail: true): bigint;
-function stringToValue(input: string, alpha: string, throwOnFail: false): bigint | null;
-function stringToValue(input: string, alpha: string,
-  throwOnFail: boolean): bigint | null {
-
+function stringToValue(
+  input: string,
+  alpha: string,
+  throwOnFail: false
+): bigint | null;
+function stringToValue(
+  input: string,
+  alpha: string,
+  throwOnFail: boolean
+): bigint | null {
   let value = BigInt(0);
   let multiplier = BigInt(1);
 
@@ -79,8 +95,7 @@ function stringToValue(input: string, alpha: string,
     if (alphaIndex < 0) {
       if (throwOnFail) {
         throw new Error(`The "${char}" character is not allowed.`);
-      }
-      else {
+      } else {
         return null;
       }
     }
@@ -101,7 +116,9 @@ function stringToValue(input: string, alpha: string,
  * @param alpha The alphabet the string should be counted against.
  */
 function stringFromValue(value: bigint, alpha: string): string {
-  if (value === BigInt(0)) { return ""; }
+  if (value === BigInt(0)) {
+    return "";
+  }
 
   const alphaLength = BigInt(alpha.length);
 

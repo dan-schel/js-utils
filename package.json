@@ -19,7 +19,8 @@
     "package": "npm run build && npm pack",
     "test": "jest --no-cache --runInBand",
     "test:cov": "jest --coverage --no-cache --runInBand",
-    "addscope": "node tools/packagejson name @schel-d/js-utils"
+    "addscope": "node tools/packagejson name @schel-d/js-utils",
+    "lint": "eslint ."
   },
   "publishConfig": {
     "access": "public"

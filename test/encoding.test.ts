@@ -3,16 +3,12 @@ import { base64, decimal, reencode, tryReencode } from "../src/index";
 test("reencode", () => {
   const inputAlpha = "0123456789.";
 
-  const strings = [
-    "",
-    "0",
-    ".",
-    "00",
-    "20230313.142900.315.241"
-  ];
+  const strings = ["", "0", ".", "00", "20230313.142900.315.241"];
   for (const str of strings) {
     // Use reencode.
-    expect(reencode(reencode(str, inputAlpha, base64), base64, inputAlpha)).toBe(str);
+    expect(
+      reencode(reencode(str, inputAlpha, base64), base64, inputAlpha)
+    ).toBe(str);
 
     // Use tryReencode.
     const encoded = tryReencode(str, inputAlpha, base64);
@@ -26,10 +22,12 @@ test("reencode values", () => {
   const inputAlpha = "0123456789.";
   expect(reencode("", inputAlpha, base64)).toBe("");
   expect(tryReencode("", inputAlpha, base64)).toBe("");
-  expect(reencode("20230313.142900.315.241", inputAlpha, base64))
-    .toBe("QLH_XPPqOjola");
-  expect(tryReencode("20230313.142900.315.241", inputAlpha, base64))
-    .toBe("QLH_XPPqOjola");
+  expect(reencode("20230313.142900.315.241", inputAlpha, base64)).toBe(
+    "QLH_XPPqOjola"
+  );
+  expect(tryReencode("20230313.142900.315.241", inputAlpha, base64)).toBe(
+    "QLH_XPPqOjola"
+  );
 
   expect(reencode("0", "012", decimal)).toBe("0");
   expect(tryReencode("0", "012", decimal)).toBe("0");

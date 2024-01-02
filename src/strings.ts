@@ -5,15 +5,17 @@
  * @param text The string to convert.
  */
 export function kebabify(text: string): string {
-  return text
-    // Make lowercase.
-    .toLowerCase()
+  return (
+    text
+      // Make lowercase.
+      .toLowerCase()
 
-    // Replace spaces with dashes.
-    .replace(/\s/g, "-")
+      // Replace spaces with dashes.
+      .replace(/\s/g, "-")
 
-    // Remove all other non ASCII letters/numbers.
-    .replace(/[^a-z0-9-]/g, "");
+      // Remove all other non ASCII letters/numbers.
+      .replace(/[^a-z0-9-]/g, "")
+  );
 }
 
 /**
@@ -24,16 +26,19 @@ export function kebabify(text: string): string {
  * @param finalSeparator The separator to use for the final item.
  * @param pairSeparator The separator to use if there's only 2 items.
  */
-export function listify(list: string[], normalSeparator: string,
-  finalSeparator: string, pairSeparator: string): string {
-
-  if (list.length == 0) {
+export function listify(
+  list: string[],
+  normalSeparator: string,
+  finalSeparator: string,
+  pairSeparator: string
+): string {
+  if (list.length === 0) {
     return "";
   }
-  if (list.length == 1) {
+  if (list.length === 1) {
     return list[0];
   }
-  if (list.length == 2) {
+  if (list.length === 2) {
     return `${list[0]}${pairSeparator}${list[1]}`;
   }
 
