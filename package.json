@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A library for code common to my various NodeJS/Browser projects.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
