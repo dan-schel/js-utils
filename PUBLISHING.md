@@ -16,7 +16,7 @@ The `@commitlint/config-conventional` plugin enforces that the commit message mu
 - style
 - test
 
-E.g. `fix: clean readme/publishing doc` or `feat: migrate from schel-d-utils`.
+E.g. `fix: clean readme/publishing doc` or `feat: add array helper function`.
 
 ## Publishing the package
 

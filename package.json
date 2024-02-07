@@ -1,5 +1,5 @@
 {
-  "name": "@schel-d/js-utils",
+  "name": "@dan-schel/js-utils",
   "version": "2.0.1",
   "description": "A library for code common to my various NodeJS/Browser projects.",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,7 @@
     "package": "npm run build && npm pack",
     "test": "jest --no-cache --runInBand",
     "test:cov": "jest --coverage --no-cache --runInBand",
-    "addscope": "node tools/packagejson name @schel-d/js-utils",
+    "addscope": "node tools/packagejson name @dan-schel/js-utils",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -33,7 +33,7 @@
     "utils",
     "javascript"
   ],
-  "author": "schel-d",
+  "author": "dan-schel",
   "license": "MIT",
   "homepage": "https://github.com/schel-d/js-utils",
   "repository": {
