@@ -35,13 +35,13 @@
   ],
   "author": "dan-schel",
   "license": "MIT",
-  "homepage": "https://github.com/schel-d/js-utils",
+  "homepage": "https://github.com/dan-schel/js-utils",
   "repository": {
     "type": "git",
-    "url": "git@github.com:schel-d/js-utils.git"
+    "url": "git@github.com:dan-schel/js-utils.git"
   },
   "bugs": {
-    "url": "https://github.com/schel-d/js-utils/issues"
+    "url": "https://github.com/dan-schel/js-utils/issues"
   },
   "dependencies": {
     "uuid": "^9.0.0"
