@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "3.0.2",
+  "version": "3.0.4",
   "description": "A library for code common to my various NodeJS/Browser projects.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -17,8 +17,8 @@
     "build:types": "node tools/cleanup types && tsc -p config/tsconfig.types.json",
     "clean": "node tools/cleanup",
     "package": "npm run build && npm pack",
-    "test": "jest --no-cache --runInBand",
-    "test:cov": "jest --coverage --no-cache --runInBand",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
     "addscope": "node tools/packagejson name @dan-schel/js-utils",
     "lint": "eslint .",
     "format": "prettier --write ."

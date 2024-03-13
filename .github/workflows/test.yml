@@ -2,17 +2,9 @@ name: Test
 
 on:
   push:
-    paths-ignore:
-      - "docs/**"
-      - "*.md"
-      - "LICENSE"
     branches:
       - master
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "*.md"
-      - "LICENSE"
     branches:
       - master
 
@@ -28,7 +20,7 @@ jobs:
       - name: Install modules
         run: npm ci
       - name: Run tests
-        run: npm run test:cov
+        run: npm run test-coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
