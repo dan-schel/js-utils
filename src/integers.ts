@@ -25,9 +25,41 @@ export function parseIntNull(value: string): number | null {
 }
 
 /**
+ * Parses an integer. Throws an error if the string given is not an integer (it
+ * contains decimals, text, or illegal symbols).
+ * @param value The string with the integer.
+ */
+export function parseFloatThrow(value: string): number {
+  if (!/^-?[0-9]*\.?[0-9]+$/g.test(value)) {
+    throw notAFloat(value);
+  }
+  const num = parseFloat(value);
+  return num;
+}
+
+/**
+ * Parses an integer. Returns null if the string given is not an integer (it
+ * contains decimals, text, or illegal symbols).
+ * @param value The string with the integer.
+ */
+export function parseFloatNull(value: string): number | null {
+  if (!/^-?[0-9]*\.?[0-9]+$/g.test(value)) {
+    return null;
+  }
+  const num = parseFloat(value);
+  return num;
+}
+
+/**
  * "`value`" is not an integer.
  */
 const notAnInt = (value: string) => new Error(`"${value}" is not an integer.`);
+
+/**
+ * "`value`" is not an floating-point number.
+ */
+const notAFloat = (value: string) =>
+  new Error(`"${value}" is not an floating-point number.`);
 
 /**
  * For positive numbers, does `x % mod` as usual, but extends this pattern to
@@ -72,20 +104,26 @@ export class NumberRange {
    */
   static parse(input: string): NumberRange | null {
     if (!input.includes("..")) {
-      const n = parseFloat(input);
-      if (isNaN(n)) {
+      const n = parseFloatNull(input);
+      if (n == null || isNaN(n)) {
         return null;
       }
       return new NumberRange(n, n);
     }
 
     const components = input.split("..");
-    if (components.length !== 2) {
+    if (
+      components.length !== 2 ||
+      components[0].startsWith(".") ||
+      components[0].endsWith(".") ||
+      components[1].startsWith(".") ||
+      components[1].endsWith(".")
+    ) {
       return null;
     }
-    const min = parseFloat(components[0]);
-    const max = parseFloat(components[1]);
-    if (isNaN(min) || isNaN(max)) {
+    const min = parseFloatNull(components[0]);
+    const max = parseFloatNull(components[1]);
+    if (min == null || max == null || isNaN(min) || isNaN(max)) {
       return null;
     }
     return new NumberRange(min, max);
