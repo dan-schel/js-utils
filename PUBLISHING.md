@@ -25,3 +25,4 @@ To publish a new release of this package to npm:
 - Run `npm version patch`, `npm version minor`, or `npm version major`.
   - You can also provide a commit message with the `-m` flag, e.g. `npm version patch -m "Fix a major bug!"`
 - Sync changes with GitHub.
+- Package will be published when PR is merged.
