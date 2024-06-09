@@ -84,7 +84,7 @@ export class Polled<T, SchedulerType> {
       await this._fetchAndStore();
       this._schedulePoll(this.pollInterval);
     } else {
-      this._poll();
+      await this._poll();
     }
   }
 
@@ -137,7 +137,6 @@ export class Polled<T, SchedulerType> {
       this._failedAttemptCount = 0;
       this._schedulePoll(this.pollInterval);
     } catch (error) {
-      this._failedAttemptCount++;
       this._onError?.(error);
 
       const interval =
@@ -146,6 +145,7 @@ export class Polled<T, SchedulerType> {
           : this.pollInterval;
 
       this._schedulePoll(interval);
+      this._failedAttemptCount++;
     }
   }
 
