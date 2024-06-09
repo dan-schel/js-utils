@@ -12,38 +12,64 @@ export interface PollScheduler<T> {
 
 /** Handles periodically fetching a value so it's always available in advance. */
 export class Polled<T, SchedulerType> {
+  readonly pollInterval: number;
+  readonly retryInterval: number | null;
+  readonly maxRetries: number;
+  readonly requireInitSuccess: boolean;
+
+  private readonly _fetch: () => Promise<T>;
+  private readonly _scheduler: PollScheduler<SchedulerType>;
+  private readonly _onError: ((error: unknown) => void) | null;
+
   private _data: Timestamped<T> | null;
   private _failedAttemptCount: number;
   private _runningSchedule: SchedulerType | null;
 
-  constructor(
+  constructor({
+    fetch,
+    scheduler,
+    pollInterval,
+    retryInterval = null,
+    maxRetries = 5,
+    onError = null,
+    requireInitSuccess = true,
+  }: {
     /** The function that does the expensive fetch. */
-    private readonly _fetch: () => Promise<T>,
+    fetch: () => Promise<T>;
     /**
      * The poll scheduler, which manages time and allows functions to be run
      * after a given delay. The timestamp and delay can be measured in any unit
      * of time, as long as they match the unit used for the poll interval, and
      * the retry interval.
      */
-    private readonly _scheduler: PollScheduler<SchedulerType>,
+    scheduler: PollScheduler<SchedulerType>;
     /** How often to poll for fresh data. */
-    readonly pollInterval: number,
+    pollInterval: number;
     /**
      * How often to retry after a failed fetch. Default: null (i.e. don't retry,
      * just wait for the next poll).
      */
-    readonly retryInterval: number | null = null,
+    retryInterval: number | null;
     /**
      * How many times to use the retry interval before reverting to the poll
      * interval. The retry interval will not be used again until a successful
      * fetch is made.
      */
-    readonly maxRetries: number = 5,
+    maxRetries: number;
     /** Calls when a fetch fails (except the first fetch, which throws). */
-    private readonly _onError: ((error: unknown) => void) | null = null,
+    onError: ((error: unknown) => void) | null;
     /** Whether to throw if the fetch during init() fails. */
-    readonly requireInitSuccess: boolean = true
-  ) {
+    requireInitSuccess: boolean;
+  }) {
+    this.pollInterval = pollInterval;
+    this.retryInterval = retryInterval;
+    this.maxRetries = maxRetries;
+    this.requireInitSuccess = requireInitSuccess;
+
+    this._fetch = fetch;
+    this._scheduler = scheduler;
+    this._onError = onError;
+
     this._data = null;
     this._failedAttemptCount = 0;
     this._runningSchedule = null;

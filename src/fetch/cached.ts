@@ -9,25 +9,42 @@ type Returned<T> = Timestamped<T> & {
 
 /** Handles caching a value for a given duration to avoid repeated fetches. */
 export class Cached<T> {
+  readonly cacheDuration: number;
+  readonly fallbackDuration: number;
+
+  private readonly _fetch: () => Promise<T>;
+  private readonly _getCurrentTimestamp: () => number;
+
   private _data: Timestamped<T> | null;
 
-  constructor(
+  constructor({
+    fetch,
+    getCurrentTimestamp,
+    cacheDuration,
+    fallbackDuration = 0,
+  }: {
     /** The function that does the expensive fetch. */
-    private readonly _fetch: () => Promise<T>,
+    fetch: () => Promise<T>;
     /**
      * Provides the current timestamp. The timestamp can be measured in any unit
      * of time, as long as it matches the unit used for cache duration and
      * fallback duration.
      */
-    private readonly _getCurrentTimestamp: () => number,
+    getCurrentTimestamp: () => number;
     /** How long to cache data before attempting to fetch fresh again. */
-    private readonly _cacheDuration: number,
+    cacheDuration: number;
     /**
      * How long expired data can continue to be used in the event of a failed
      * fetch. Default: 0 (i.e. never fallback).
      */
-    private readonly _fallbackDuration: number = 0
-  ) {
+    fallbackDuration?: number;
+  }) {
+    this.cacheDuration = cacheDuration;
+    this.fallbackDuration = fallbackDuration;
+
+    this._fetch = fetch;
+    this._getCurrentTimestamp = getCurrentTimestamp;
+
     this._data = null;
   }
 
@@ -36,7 +53,7 @@ export class Cached<T> {
    * unavailable for older than the fallback duration.
    */
   async get(): Promise<Returned<T>> {
-    const cached = this._getCachedData(this._cacheDuration);
+    const cached = this._getCachedData(this.cacheDuration);
     if (cached !== null) {
       return { ...cached, type: "cached" };
     }
@@ -46,7 +63,7 @@ export class Cached<T> {
     } catch (error) {
       // If the fetch fails, fallback to returning the cached data if configured
       // to and the data isn't too stale.
-      const cached = this._getCachedData(this._fallbackDuration);
+      const cached = this._getCachedData(this.fallbackDuration ?? 0);
       if (cached !== null) {
         return { ...cached, type: "fallback" };
       }
