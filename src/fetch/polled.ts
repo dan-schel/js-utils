@@ -5,7 +5,7 @@ type Timestamped<T> = {
 
 /** Handles managing time and scheduling functions to run after a delay. */
 export interface PollScheduler<T> {
-  schedule: (callback: () => void, delay: number) => T;
+  schedule: (callback: () => Promise<void>, delay: number) => T;
   cancelSchedule: (schedule: T) => void;
   getCurrentTimestamp: () => number;
 }
@@ -49,17 +49,17 @@ export class Polled<T, SchedulerType> {
      * How often to retry after a failed fetch. Default: null (i.e. don't retry,
      * just wait for the next poll).
      */
-    retryInterval: number | null;
+    retryInterval?: number | null;
     /**
      * How many times to use the retry interval before reverting to the poll
      * interval. The retry interval will not be used again until a successful
      * fetch is made.
      */
-    maxRetries: number;
+    maxRetries?: number;
     /** Calls when a fetch fails (except the first fetch, which throws). */
-    onError: ((error: unknown) => void) | null;
+    onError?: ((error: unknown) => void) | null;
     /** Whether to throw if the fetch during init() fails. */
-    requireInitSuccess: boolean;
+    requireInitSuccess?: boolean;
   }) {
     this.pollInterval = pollInterval;
     this.retryInterval = retryInterval;
@@ -161,7 +161,7 @@ export class Polled<T, SchedulerType> {
       this._scheduler.cancelSchedule(this._runningSchedule);
     }
     this._runningSchedule = this._scheduler.schedule(
-      () => this._poll(),
+      async () => await this._poll(),
       interval
     );
   }
