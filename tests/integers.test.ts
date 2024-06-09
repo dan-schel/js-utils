@@ -95,18 +95,20 @@ test("posMod", () => {
   expect(posMod(-0.001, 4)).toBeCloseTo(3.999, 8);
 });
 
-test("NumberRange.parse", () => {
-  expect(NumberRange.parse("4")?.min).toStrictEqual(4);
-  expect(NumberRange.parse("4")?.max).toStrictEqual(4);
-  expect(NumberRange.parse("0.5")?.min).toStrictEqual(0.5);
-  expect(NumberRange.parse("0.5")?.max).toStrictEqual(0.5);
-  expect(NumberRange.parse(".5")?.min).toStrictEqual(0.5);
-  expect(NumberRange.parse(".5")?.max).toStrictEqual(0.5);
-  expect(NumberRange.parse("2..5.5")?.min).toStrictEqual(2);
-  expect(NumberRange.parse("2..5.5")?.max).toStrictEqual(5.5);
+describe("NumberRange", () => {
+  test("parse", () => {
+    expect(NumberRange.parse("4")?.min).toStrictEqual(4);
+    expect(NumberRange.parse("4")?.max).toStrictEqual(4);
+    expect(NumberRange.parse("0.5")?.min).toStrictEqual(0.5);
+    expect(NumberRange.parse("0.5")?.max).toStrictEqual(0.5);
+    expect(NumberRange.parse(".5")?.min).toStrictEqual(0.5);
+    expect(NumberRange.parse(".5")?.max).toStrictEqual(0.5);
+    expect(NumberRange.parse("2..5.5")?.min).toStrictEqual(2);
+    expect(NumberRange.parse("2..5.5")?.max).toStrictEqual(5.5);
 
-  expect(NumberRange.parse("2...5.5")).toBeNull();
-  expect(NumberRange.parse("2...1")).toBeNull();
-  expect(NumberRange.parse("..1")).toBeNull();
-  expect(NumberRange.parse("1..")).toBeNull();
+    expect(NumberRange.parse("2...5.5")).toBeNull();
+    expect(NumberRange.parse("2...1")).toBeNull();
+    expect(NumberRange.parse("..1")).toBeNull();
+    expect(NumberRange.parse("1..")).toBeNull();
+  });
 });

@@ -25,7 +25,7 @@ test("unique (custom object)", () => {
   const obj = (a: string) => {
     return { x: a };
   };
-  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
     unique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals)
@@ -61,7 +61,7 @@ test("areUnique (custom object)", () => {
   const obj = (a: string) => {
     return { x: a };
   };
-  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
     areUnique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals)
@@ -92,7 +92,7 @@ test("arraysMatch (custom object)", () => {
   const obj = (a: string) => {
     return { x: a };
   };
-  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
     arraysMatch([obj("cat"), obj("dog")], [obj("cat"), obj("dog")], strEquals)
