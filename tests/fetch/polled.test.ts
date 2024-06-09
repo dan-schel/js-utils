@@ -1,4 +1,4 @@
-import { Polled } from "../../src/index";
+import { Polled, itsOk } from "../../src/index";
 
 describe("Polled", () => {
   it("should have data after calling init()", async () => {
@@ -34,8 +34,13 @@ describe("Polled", () => {
   });
 
   it("should schedule the next poll when one completes", async () => {
-    const { polled, setValue, getCurrentSchedule, cancelScheduleFn } =
-      setupPolled();
+    const {
+      polled,
+      setValue,
+      getCurrentSchedule,
+      runCurrentSchedule,
+      cancelScheduleFn,
+    } = setupPolled();
 
     await polled.init();
 
@@ -44,7 +49,7 @@ describe("Polled", () => {
 
     // Update the value and mock the time passing.
     setValue("updated");
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     expect(polled.get()).toEqual({ value: "updated", timestamp: 3 });
 
@@ -56,8 +61,13 @@ describe("Polled", () => {
   });
 
   it("should use the retry interval if fetching fails", async () => {
-    const { polled, setValue, getCurrentSchedule, cancelScheduleFn } =
-      setupPolled();
+    const {
+      polled,
+      setValue,
+      getCurrentSchedule,
+      runCurrentSchedule,
+      cancelScheduleFn,
+    } = setupPolled();
 
     await polled.init();
 
@@ -66,7 +76,7 @@ describe("Polled", () => {
 
     // Update the value and mock the time passing.
     setValue(null);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     // The value remains the same and the new schedule uses the retry interval.
     expect(polled.get()).toEqual({ value: "original", timestamp: 0 });
@@ -76,33 +86,38 @@ describe("Polled", () => {
   });
 
   it("should obey the max retries setting", async () => {
-    const { polled, setValue, getCurrentSchedule, cancelScheduleFn } =
-      setupPolled();
+    const {
+      polled,
+      setValue,
+      getCurrentSchedule,
+      runCurrentSchedule,
+      cancelScheduleFn,
+    } = setupPolled();
 
     await polled.init();
     expect(getCurrentSchedule()?.delay).toBe(3);
 
     // Update the value and mock the time passing.
     setValue(null);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     // Retry three times using the retry interval.
     // (1 first attempt + 3 retries = 4 total fetch calls)
     expect(getCurrentSchedule()?.delay).toBe(1);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
     expect(getCurrentSchedule()?.delay).toBe(1);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
     expect(getCurrentSchedule()?.delay).toBe(1);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     // The max retries have been reached, so the retry interval is not used.
     expect(getCurrentSchedule()?.delay).toBe(3);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     // Only a success can resets the retry count. We use the poll interval for
     // the next attempt.
     expect(getCurrentSchedule()?.delay).toBe(3);
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
 
     // Ultimately the value doesn't change and no schedules are cancelled.
     expect(polled.get()).toEqual({ value: "original", timestamp: 0 });
@@ -133,6 +148,7 @@ describe("Polled", () => {
       setValue,
       setCurrentTime,
       getCurrentSchedule,
+      runCurrentSchedule,
       cancelScheduleFn,
     } = setupPolled();
 
@@ -157,7 +173,7 @@ describe("Polled", () => {
     expect(getCurrentSchedule()?.delay).toBe(3);
 
     // The next update comes through at time = 4.
-    await getCurrentSchedule()!.callback();
+    await runCurrentSchedule();
     expect(polled.get()).toEqual({ value: "updated", timestamp: 4 });
   });
 });
@@ -211,6 +227,7 @@ function setupPolled({
     setValue: (newValue: string | null) => (value = newValue),
     setCurrentTime: (newTime: number) => (currentTime = newTime),
     getCurrentSchedule: () => schedule,
+    runCurrentSchedule: async () => await itsOk(schedule).callback(),
     cancelScheduleFn,
   };
 }

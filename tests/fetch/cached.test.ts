@@ -1,7 +1,7 @@
 import { Cached } from "../../src/index";
 
 describe("Cached", () => {
-  it("should return the cached value until the cache duration of time passes", async () => {
+  it("should return the cached value until the cache duration passes", async () => {
     let currentTime = 0;
     let value = "original";
 
@@ -93,8 +93,8 @@ describe("Cached", () => {
   });
 
   it("should throw an error if the cache has no data", async () => {
-    let currentTime = 0;
-    let value: string | null = null;
+    const currentTime = 0;
+    const value: string | null = null;
 
     const cached = new Cached({
       fetch: async () => {
