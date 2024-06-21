@@ -56,9 +56,9 @@ export class Polled<T, SchedulerType> {
      * fetch is made.
      */
     maxRetries?: number;
-    /** Calls when a fetch fails (except the first fetch, which throws). */
+    /** Called when a fetch fails (except the first fetch, which throws). */
     onError?: ((error: unknown) => void) | null;
-    /** Whether to throw if the fetch during init() fails. */
+    /** Whether to throw if the fetch during init() fails. Default: true. */
     requireInitSuccess?: boolean;
   }) {
     this.pollInterval = pollInterval;
