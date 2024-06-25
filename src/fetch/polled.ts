@@ -21,6 +21,7 @@ export class Polled<T, SchedulerType> {
   private readonly _scheduler: PollScheduler<SchedulerType>;
   private readonly _onError: ((error: unknown) => void) | null;
 
+  private _initialized: boolean;
   private _data: Timestamped<T> | null;
   private _failedAttemptCount: number;
   private _runningSchedule: SchedulerType | null;
@@ -70,6 +71,7 @@ export class Polled<T, SchedulerType> {
     this._scheduler = scheduler;
     this._onError = onError;
 
+    this._initialized = false;
     this._data = null;
     this._failedAttemptCount = 0;
     this._runningSchedule = null;
@@ -86,6 +88,7 @@ export class Polled<T, SchedulerType> {
     } else {
       await this._poll();
     }
+    this._initialized = true;
   }
 
   /** Stops polling for the value. Can be started again by calling init(). */
@@ -94,6 +97,7 @@ export class Polled<T, SchedulerType> {
       this._scheduler.cancelSchedule(this._runningSchedule);
       this._runningSchedule = null;
     }
+    this._initialized = false;
   }
 
   /**
@@ -167,7 +171,7 @@ export class Polled<T, SchedulerType> {
   }
 
   private _assertInitialized() {
-    if (this._runningSchedule == null) {
+    if (!this._initialized) {
       throw new Error("Cannot retrieve value. Call init() first.");
     }
   }
