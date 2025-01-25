@@ -41,7 +41,7 @@
     "url": "https://github.com/dan-schel/js-utils/issues"
   },
   "dependencies": {
-    "uuid": "^9.0.0"
+    "uuid": "^11.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
