@@ -1,6 +1,7 @@
 import {
   areUnique,
   arraysMatch,
+  groupBy,
   range,
   removeIf,
   repeat,
@@ -175,4 +176,15 @@ test("removeIf", () => {
   const modified2 = removeIf(array2, (i) => i.startsWith("a"));
   expect(array2).toStrictEqual(["bacon", "panda", "koala", "bicycle"]);
   expect(modified2).toStrictEqual(false);
+});
+
+test("groupBy", () => {
+  const array = ["bacon", "panda", "koala", "bicycle"];
+  const groupByFirstLetter = (i: string) => i[0];
+  const grouped = groupBy(array, groupByFirstLetter);
+  expect(grouped).toStrictEqual([
+    { group: "b", items: ["bacon", "bicycle"] },
+    { group: "p", items: ["panda"] },
+    { group: "k", items: ["koala"] },
+  ]);
 });

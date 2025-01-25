@@ -128,3 +128,32 @@ export function removeIf<T>(array: T[], predicate: (a: T) => boolean): boolean {
   }
   return modified;
 }
+
+type Groups<Item, Group extends string | number> = {
+  group: Group;
+  items: Item[];
+}[];
+
+/**
+ * Groups the given items using the given group selector.
+ * @param items The items to group.
+ * @param groupSelector A function which selects the string/number to group by.
+ */
+export function groupBy<Item, Group extends string | number>(
+  items: Item[],
+  groupSelector: (item: Item) => Group
+): Groups<Item, Group> {
+  const groups = new Map<Group, Item[]>();
+
+  for (const item of items) {
+    const group = groupSelector(item);
+    const groupItems = groups.get(group) ?? [];
+    groupItems.push(item);
+    groups.set(group, groupItems);
+  }
+
+  return Array.from(groups.entries()).map(([group, items]) => ({
+    group,
+    items,
+  }));
+}
