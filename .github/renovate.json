@@ -4,6 +4,7 @@
   "labels": ["dependencies"],
   "prHourlyLimit": 10,
   "prConcurrentLimit": 500,
+  "lockFileMaintenance": { "enabled": true },
   "bumpVersion": "patch",
   "packageRules": [
     {
