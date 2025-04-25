@@ -1,9 +1,9 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A library for code common to my various NodeJS/Browser projects.",
-  "exports": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
