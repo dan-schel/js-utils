@@ -6,7 +6,7 @@
   "prConcurrentLimit": 500,
   "lockFileMaintenance": { "enabled": true },
   "bumpVersion": "patch",
-  "rangeStrategy": "bump",
+  "rangeStrategy": "pin",
   "packageRules": [
     {
       "matchCurrentVersion": ">=1.0.0",
