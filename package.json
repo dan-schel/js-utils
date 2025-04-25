@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "A library for code common to my various NodeJS/Browser projects.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -50,7 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.2.0",
     "prettier": "^2.4.0",
