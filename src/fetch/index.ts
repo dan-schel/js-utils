@@ -1,2 +1,2 @@
-export * from "./cached";
-export * from "./polled";
+export * from "./cached.js";
+export * from "./polled.js";
