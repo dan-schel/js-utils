@@ -42,7 +42,7 @@ export function itsOk<T>(val: T | undefined | null): T {
 export function nullableEquals<T>(
   a: T | null,
   b: T | null,
-  equalsFunc: (a: T, b: T) => boolean
+  equalsFunc: (a: T, b: T) => boolean,
 ): boolean {
   if (a == null) {
     return b == null;

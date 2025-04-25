@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest";
 import { Cached } from "../../src/index";
 
 describe("Cached", () => {
@@ -5,7 +6,7 @@ describe("Cached", () => {
     let currentTime = 0;
     let value = "original";
 
-    const fetch = jest.fn(async () => value);
+    const fetch = vi.fn(async () => value);
 
     const cached = new Cached({
       fetch,

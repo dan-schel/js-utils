@@ -30,7 +30,7 @@ export function listify(
   list: string[],
   normalSeparator: string,
   finalSeparator: string,
-  pairSeparator: string
+  pairSeparator: string,
 ): string {
   if (list.length === 0) {
     return "";

@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import { kebabify, listifyAnd, listifyOr } from "../src/index";
 
 test("kebabify", () => {
@@ -11,10 +12,10 @@ test("kebabify", () => {
 
 test("listifyAnd", () => {
   expect(listifyAnd(["cat", "dog", "frog", "cog", "fog", "log"])).toStrictEqual(
-    "cat, dog, frog, cog, fog, and log"
+    "cat, dog, frog, cog, fog, and log",
   );
   expect(listifyAnd(["cat", "dog", "frog"])).toStrictEqual(
-    "cat, dog, and frog"
+    "cat, dog, and frog",
   );
   expect(listifyAnd(["cat", "dog"])).toStrictEqual("cat and dog");
   expect(listifyAnd(["cat"])).toStrictEqual("cat");
@@ -23,7 +24,7 @@ test("listifyAnd", () => {
 
 test("listifyOr", () => {
   expect(listifyOr(["cat", "dog", "frog", "cog", "fog", "log"])).toStrictEqual(
-    "cat, dog, frog, cog, fog, or log"
+    "cat, dog, frog, cog, fog, or log",
   );
   expect(listifyOr(["cat", "dog", "frog"])).toStrictEqual("cat, dog, or frog");
   expect(listifyOr(["cat", "dog"])).toStrictEqual("cat or dog");

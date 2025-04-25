@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import { clamp, map, mapClamp } from "../src/index";
 
 test("clamp", () => {

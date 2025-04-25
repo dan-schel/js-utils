@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest";
 import { Polled, itsOk } from "../../src/index";
 
 describe("Polled", () => {
@@ -191,7 +192,7 @@ function setupPolled({
     callback: () => Promise<void>;
     delay: number;
   } | null = null;
-  const cancelScheduleFn = jest.fn();
+  const cancelScheduleFn = vi.fn();
 
   const polled = new Polled({
     fetch: async () => {

@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import {
   areUnique,
   arraysMatch,
@@ -29,16 +30,16 @@ test("unique (custom object)", () => {
   const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
-    unique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals)
+    unique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals),
   ).toStrictEqual([obj("cat"), obj("dog")]);
   expect(
-    unique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals)
+    unique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals),
   ).toStrictEqual([obj("dog"), obj("cat")]);
   expect(
-    unique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals)
+    unique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals),
   ).toStrictEqual([obj("rat"), obj("dog"), obj("fat"), obj("cat")]);
   expect(unique([obj("rat"), obj("rat"), obj("rat")], strEquals)).toStrictEqual(
-    [obj("rat")]
+    [obj("rat")],
   );
   expect(unique([obj("rat")], strEquals)).toStrictEqual([obj("rat")]);
   expect(unique([], strEquals)).toStrictEqual([]);
@@ -65,16 +66,16 @@ test("areUnique (custom object)", () => {
   const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
-    areUnique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals)
+    areUnique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals),
   ).toStrictEqual(false);
   expect(
-    areUnique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals)
+    areUnique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals),
   ).toStrictEqual(false);
   expect(
-    areUnique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals)
+    areUnique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals),
   ).toStrictEqual(true);
   expect(
-    areUnique([obj("rat"), obj("rat"), obj("rat")], strEquals)
+    areUnique([obj("rat"), obj("rat"), obj("rat")], strEquals),
   ).toStrictEqual(false);
   expect(areUnique([obj("rat")], strEquals)).toStrictEqual(true);
   expect(areUnique([], strEquals)).toStrictEqual(true);
@@ -96,43 +97,43 @@ test("arraysMatch (custom object)", () => {
   const strEquals = (a: { x: string }, b: { x: string }) => a.x === b.x;
 
   expect(
-    arraysMatch([obj("cat"), obj("dog")], [obj("cat"), obj("dog")], strEquals)
+    arraysMatch([obj("cat"), obj("dog")], [obj("cat"), obj("dog")], strEquals),
   ).toStrictEqual(true);
 
   expect(
-    arraysMatch([obj("cat"), obj("dog")], [obj("dog"), obj("cat")], strEquals)
+    arraysMatch([obj("cat"), obj("dog")], [obj("dog"), obj("cat")], strEquals),
   ).toStrictEqual(true);
 
   expect(
     arraysMatch(
       [obj("cat"), obj("dog")],
       [obj("dog"), obj("cat"), obj("cat")],
-      strEquals
-    )
+      strEquals,
+    ),
   ).toStrictEqual(true);
 
   expect(
     arraysMatch(
       [obj("cat"), obj("dog"), obj("dog")],
       [obj("dog"), obj("cat")],
-      strEquals
-    )
+      strEquals,
+    ),
   ).toStrictEqual(true);
 
   expect(
     arraysMatch(
       [obj("cat"), obj("frog"), obj("dog")],
       [obj("dog"), obj("cat")],
-      strEquals
-    )
+      strEquals,
+    ),
   ).toStrictEqual(false);
 
   expect(
     arraysMatch(
       [obj("cat"), obj("dog")],
       [obj("dog"), obj("cat"), obj("frog")],
-      strEquals
-    )
+      strEquals,
+    ),
   ).toStrictEqual(false);
 
   expect(arraysMatch([], [], strEquals)).toStrictEqual(true);
@@ -146,19 +147,19 @@ test("arraysMatch (primitive string)", () => {
   expect(arraysMatch(["cat", "dog"], ["dog", "cat"])).toStrictEqual(true);
 
   expect(arraysMatch(["cat", "dog"], ["dog", "cat", "cat"])).toStrictEqual(
-    true
+    true,
   );
 
   expect(arraysMatch(["cat", "dog", "dog"], ["dog", "cat"])).toStrictEqual(
-    true
+    true,
   );
 
   expect(arraysMatch(["cat", "frog", "dog"], ["dog", "cat"])).toStrictEqual(
-    false
+    false,
   );
 
   expect(arraysMatch(["cat", "dog"], ["dog", "cat", "frog"])).toStrictEqual(
-    false
+    false,
   );
 
   expect(arraysMatch([], [])).toStrictEqual(true);
