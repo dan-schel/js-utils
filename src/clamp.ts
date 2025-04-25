@@ -29,7 +29,7 @@ export function map(
   inA: number,
   inB: number,
   outA: number,
-  outB: number
+  outB: number,
 ): number {
   return ((x - inA) / (inB - inA)) * (outB - outA) + outA;
 }
@@ -49,7 +49,7 @@ export function mapClamp(
   inA: number,
   inB: number,
   outA: number,
-  outB: number
+  outB: number,
 ): number {
   return clamp(map(x, inA, inB, outA, outB), outA, outB);
 }

@@ -94,7 +94,7 @@ export class NumberRange {
     /** The minimum value. */
     readonly min: number,
     /** The maximum value. */
-    readonly max: number
+    readonly max: number,
   ) {}
 
   /**

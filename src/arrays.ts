@@ -82,12 +82,12 @@ export function arraysMatch(a: number[], b: number[]): boolean;
 export function arraysMatch<T>(
   a: T[],
   b: T[],
-  equalsFunc?: EqualsFunc<T>
+  equalsFunc?: EqualsFunc<T>,
 ): boolean;
 export function arraysMatch<T>(
   a: T[],
   b: T[],
-  equalsFunc?: EqualsFunc<T>
+  equalsFunc?: EqualsFunc<T>,
 ): boolean {
   // If both arrays are empty, they match!
   if (a.length === 0 && b.length === 0) {
@@ -141,7 +141,7 @@ type Groups<Item, Group extends string | number> = {
  */
 export function groupBy<Item, Group extends string | number>(
   items: Item[],
-  groupSelector: (item: Item) => Group
+  groupSelector: (item: Item) => Group,
 ): Groups<Item, Group> {
   const groups = new Map<Group, Item[]>();
 

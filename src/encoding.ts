@@ -38,7 +38,7 @@ export const base48Safe = "2345679bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
 export function reencode(
   input: string,
   fromAlpha: string,
-  toAlpha: string
+  toAlpha: string,
 ): string {
   return stringFromValue(stringToValue(input, fromAlpha, true), toAlpha);
 }
@@ -55,7 +55,7 @@ export function reencode(
 export function tryReencode(
   input: string,
   fromAlpha: string,
-  toAlpha: string
+  toAlpha: string,
 ): string | null {
   const value = stringToValue(input, fromAlpha, false);
   if (value == null) {
@@ -79,12 +79,12 @@ function stringToValue(input: string, alpha: string, throwOnFail: true): bigint;
 function stringToValue(
   input: string,
   alpha: string,
-  throwOnFail: false
+  throwOnFail: false,
 ): bigint | null;
 function stringToValue(
   input: string,
   alpha: string,
-  throwOnFail: boolean
+  throwOnFail: boolean,
 ): bigint | null {
   let value = BigInt(0);
   let multiplier = BigInt(1);

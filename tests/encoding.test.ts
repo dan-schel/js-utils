@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import { base64, decimal, reencode, tryReencode } from "../src/index";
 
 test("reencode", () => {
@@ -7,13 +8,12 @@ test("reencode", () => {
   for (const str of strings) {
     // Use reencode.
     expect(
-      reencode(reencode(str, inputAlpha, base64), base64, inputAlpha)
+      reencode(reencode(str, inputAlpha, base64), base64, inputAlpha),
     ).toBe(str);
 
     // Use tryReencode.
     const encoded = tryReencode(str, inputAlpha, base64);
     expect(encoded).not.toBeNull();
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     expect(tryReencode(encoded!, base64, inputAlpha)).toBe(str);
   }
 });
@@ -23,10 +23,10 @@ test("reencode values", () => {
   expect(reencode("", inputAlpha, base64)).toBe("");
   expect(tryReencode("", inputAlpha, base64)).toBe("");
   expect(reencode("20230313.142900.315.241", inputAlpha, base64)).toBe(
-    "QLH_XPPqOjola"
+    "QLH_XPPqOjola",
   );
   expect(tryReencode("20230313.142900.315.241", inputAlpha, base64)).toBe(
-    "QLH_XPPqOjola"
+    "QLH_XPPqOjola",
   );
 
   expect(reencode("0", "012", decimal)).toBe("0");

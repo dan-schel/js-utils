@@ -145,7 +145,7 @@ export class Polled<T, SchedulerType> {
 
       const interval =
         this._failedAttemptCount < this.maxRetries
-          ? this.retryInterval ?? this.pollInterval
+          ? (this.retryInterval ?? this.pollInterval)
           : this.pollInterval;
 
       this._schedulePoll(interval);
@@ -166,7 +166,7 @@ export class Polled<T, SchedulerType> {
     }
     this._runningSchedule = this._scheduler.schedule(
       async () => await this._poll(),
-      interval
+      interval,
     );
   }
 

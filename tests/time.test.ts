@@ -1,3 +1,4 @@
+import { test, expect } from "vitest";
 import { hour12To24, hour24To12, tryParseUserTimeString } from "../src/index";
 
 test("hour12To24", () => {
