@@ -3,5 +3,13 @@
   "extends": ["config:recommended"],
   "labels": ["dependencies"],
   "prHourlyLimit": 10,
-  "prConcurrentLimit": 500
+  "prConcurrentLimit": 500,
+  "bumpVersion": "patch",
+  "packageRules": [
+    {
+      "matchCurrentVersion": ">=1.0.0",
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "all non-major updates"
+    }
+  ]
 }
