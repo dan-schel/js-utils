@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "A library for code common to my various NodeJS/Browser projects.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@eslint/js": "9.25.1",
     "@types/uuid": "10.0.0",
-    "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/coverage-v8": "3.1.2",
     "eslint": "9.25.1",
     "eslint-config-prettier": "10.1.2",
     "eslint-plugin-prettier": "5.2.6",
@@ -57,7 +57,7 @@
     "ts-loader": "9.5.2",
     "typescript": "5.8.3",
     "typescript-eslint": "8.31.0",
-    "vitest": "^3.1.2",
+    "vitest": "3.1.2",
     "webpack": "5.99.6",
     "webpack-cli": "6.0.1"
   }
