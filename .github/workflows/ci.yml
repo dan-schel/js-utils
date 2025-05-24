@@ -11,7 +11,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.15.0
+          node-version: 22.15.1
       - name: Install modules
         run: npm ci
       - name: Run formatting
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.15.0
+          node-version: 22.15.1
       - name: Install modules
         run: npm ci
       - name: Run linting
@@ -37,13 +37,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.15.0
+          node-version: 22.15.1
       - name: Install modules
         run: npm ci
       - name: Run tests
         run: npm run test-coverage
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5.4.2
+        uses: codecov/codecov-action@v5.4.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: dan-schel/js-utils
@@ -57,7 +57,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.15.0
+          node-version: 22.15.1
       - name: Install modules
         run: npm ci
       - name: Run build
