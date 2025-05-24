@@ -34,9 +34,6 @@
   "bugs": {
     "url": "https://github.com/dan-schel/js-utils/issues"
   },
-  "dependencies": {
-    "uuid": "11.1.0"
-  },
   "devDependencies": {
     "@eslint/js": "9.25.1",
     "@types/node": "22.15.2",
