@@ -5,13 +5,16 @@
   "prHourlyLimit": 10,
   "prConcurrentLimit": 500,
   "lockFileMaintenance": { "enabled": true },
-  "bumpVersion": "patch",
   "rangeStrategy": "pin",
   "packageRules": [
     {
       "matchCurrentVersion": ">=1.0.0",
       "matchUpdateTypes": ["patch", "minor"],
       "groupName": "all non-major updates"
+    },
+    {
+      "matchDepTypes": ["!devDependencies"],
+      "bumpVersion": true
     }
   ]
 }
