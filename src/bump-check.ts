@@ -30,15 +30,15 @@ async function bumpCheck() {
     return { error: "Unable to determine default branch." };
   }
 
-  const currentBranch = getBranchName();
+  const currentBranch = getCurrentBranchName();
   if (currentBranch == null) {
     return { error: "Unable to determine current branch." };
   }
   if (currentBranch === defaultBranch) {
-    return { skip: `On ${currentBranch}.` };
+    return { skip: `On ${defaultBranch}.` };
   }
 
-  const versionResult = await getPackageJson();
+  const versionResult = await getCurrentPackageJson(currentBranch);
   if ("error" in versionResult) {
     return { error: versionResult.error };
   }
@@ -47,13 +47,14 @@ async function bumpCheck() {
 
   const masterPackageJson = getMasterPackageJson(defaultBranch);
   if (masterPackageJson == null) {
-    return { error: `Unable to read package.json on ${defaultBranch}.` };
+    return {
+      error: `Unable to fetch package.json from ${defaultBranch} branch.`,
+    };
   }
 
-  const masterVersionResult = retrieveVersion(masterPackageJson);
+  const masterVersionResult = retrieveVersion(masterPackageJson, defaultBranch);
   if ("error" in masterVersionResult) {
-    // TODO: Do this better.
-    return { error: masterVersionResult.error + " (master)" };
+    return { error: masterVersionResult.error };
   }
 
   console.log(`Detected v${masterVersionResult.version} on ${defaultBranch}.`);
@@ -61,7 +62,7 @@ async function bumpCheck() {
   const bumped = semver.gt(versionResult.version, masterVersionResult.version);
   if (!bumped) {
     return {
-      error: "Version not bumped.",
+      error: `Version must be higher than v${masterVersionResult.version}.`,
     };
   } else {
     return {
@@ -79,47 +80,44 @@ function isGitRepository() {
   }
 }
 
-function getBranchName() {
-  try {
-    return execSync("git branch --show-current").toString().trim();
-  } catch {
-    return null;
-  }
+function getDefaultBranchName() {
+  return execOrNull(
+    "git remote show origin | grep 'HEAD branch' | cut -d' ' -f5",
+  )?.trim();
 }
 
-async function getPackageJson() {
+function getCurrentBranchName() {
+  return execOrNull("git branch --show-current")?.trim();
+}
+
+async function getCurrentPackageJson(currentBranch: string) {
   try {
-    return retrieveVersion(await fsp.readFile("package.json", "utf-8"));
+    return retrieveVersion(
+      await fsp.readFile("package.json", "utf-8"),
+      currentBranch,
+    );
   } catch {
     return { error: "Unable to read package.json." as const };
   }
 }
 
 function getMasterPackageJson(defaultBranch: string) {
+  return execOrNull(
+    `git fetch origin ${defaultBranch} --depth=1 && git show origin/${defaultBranch}:package.json`,
+  );
+}
+
+function execOrNull(command: string): string | null {
   try {
-    return execSync(
-      `git fetch origin ${defaultBranch} --depth=1 && git show origin/${defaultBranch}:package.json`,
-    ).toString();
+    return execSync(command, { stdio: "pipe" }).toString();
   } catch {
     return null;
   }
 }
 
-function getDefaultBranchName() {
+function retrieveVersion(jsonStr: string, branch: string) {
   try {
-    return execSync(
-      "git remote show origin | grep 'HEAD branch' | cut -d' ' -f5",
-    )
-      .toString()
-      .trim();
-  } catch {
-    return null;
-  }
-}
-
-function retrieveVersion(packageJson: string) {
-  try {
-    const json: unknown = JSON.parse(packageJson);
+    const json: unknown = JSON.parse(jsonStr);
     if (
       typeof json === "object" &&
       json !== null &&
@@ -128,9 +126,14 @@ function retrieveVersion(packageJson: string) {
     ) {
       return { version: json.version };
     } else {
-      return { error: "No 'version' field found in package.json." as const };
+      return {
+        error: `No 'version' field found in ${branch}'s package.json.` as const,
+      };
     }
   } catch {
-    return { error: "Contents of package.json weren't valid JSON." as const };
+    return {
+      error:
+        `Contents of ${branch}'s package.json weren't valid JSON.` as const,
+    };
   }
 }
