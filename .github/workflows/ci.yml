@@ -62,3 +62,18 @@ jobs:
         run: npm ci
       - name: Run build
         run: npm run build
+  bump:
+    name: Bumps version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.15.1
+      - name: Install modules
+        run: npm ci
+      - name: Confirm version bump
+        run: npm run bump-check
