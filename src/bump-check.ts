@@ -97,8 +97,9 @@ async function getPackageJson() {
 
 function getMasterPackageJson(defaultBranch: string) {
   try {
-    execSync(`git fetch origin ${defaultBranch} --depth=1`);
-    return execSync(`git show origin/${defaultBranch}:package.json`).toString();
+    return execSync(
+      `git fetch origin ${defaultBranch} --depth=1 &&git show origin/${defaultBranch}:package.json`,
+    ).toString();
   } catch {
     return null;
   }
