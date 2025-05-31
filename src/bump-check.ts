@@ -3,9 +3,7 @@ import { execSync } from "child_process";
 import fsp from "fs/promises";
 import semver from "semver";
 
-main();
-
-async function main() {
+export async function main() {
   const result = await bumpCheck();
 
   if (result.error != null) {
