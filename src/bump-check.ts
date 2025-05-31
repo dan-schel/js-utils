@@ -62,7 +62,7 @@ async function bumpCheck() {
   const bumped = semver.gt(versionResult.version, masterVersionResult.version);
   if (!bumped) {
     return {
-      error: `Version must be higher than v${masterVersionResult.version}.`,
+      error: `Version not updated. Run 'npm version patch|minor|major' and commit the changes.`,
     };
   } else {
     return {
