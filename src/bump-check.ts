@@ -3,22 +3,29 @@ import { execSync } from "child_process";
 import fsp from "fs/promises";
 import semver from "semver";
 
-export async function main() {
-  const result = await bumpCheck();
+export async function main(args: string[]) {
+  const result = await bumpCheck(args);
 
   if (result.error != null) {
-    console.log(`❌ ${result.error}`);
+    console.log(`🔴 ${result.error}`);
     process.exit(1);
   } else if (result.skip != null) {
-    console.log(`⏭️ ${result.skip}`);
+    console.log(`🔵 ${result.skip}`);
     process.exit(0);
   } else {
-    console.log(`✅ ${result.success}`);
+    console.log(`🟢 ${result.success}`);
     process.exit(0);
   }
 }
 
-async function bumpCheck() {
+async function bumpCheck(args: string[]) {
+  const argsResult = interpretArgs(args);
+
+  if (argsResult == null) {
+    return { error: "Invalid arguments. Usage: bump-check [--ignore <regex>]" };
+  }
+
+  const { ignoreBranchRegex } = argsResult;
   if (!isGitRepository()) {
     return { error: "Not a git repository." };
   }
@@ -34,6 +41,9 @@ async function bumpCheck() {
   }
   if (currentBranch === defaultBranch) {
     return { skip: `On ${defaultBranch}.` };
+  }
+  if (ignoreBranchRegex != null && ignoreBranchRegex.test(currentBranch)) {
+    return { skip: `On ignored branch (${currentBranch}).` };
   }
 
   const versionResult = await getCurrentPackageJson(currentBranch);
@@ -133,5 +143,15 @@ function retrieveVersion(jsonStr: string, branch: string) {
       error:
         `Contents of ${branch}'s package.json weren't valid JSON.` as const,
     };
+  }
+}
+
+function interpretArgs(args: string[]) {
+  if (args.length === 0) {
+    return { ignoreBranchRegex: null };
+  } else if (args.length === 2 && args[0] === "--ignore") {
+    return { ignoreBranchRegex: new RegExp(args[1]) };
+  } else {
+    return null; // Invalid arguments.
   }
 }
