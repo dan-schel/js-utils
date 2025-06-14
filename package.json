@@ -21,7 +21,8 @@
     "package": "npm run build && npm pack"
   },
   "dependencies": {
-    "semver": "7.7.2"
+    "semver": "7.7.2",
+    "uuid": "11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "9.27.0",
