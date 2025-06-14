@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "type": "module",
   "files": [
     "dist"
@@ -21,7 +21,8 @@
     "package": "npm run build && npm pack"
   },
   "dependencies": {
-    "semver": "7.7.2"
+    "semver": "7.7.2",
+    "uuid": "11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "9.27.0",
