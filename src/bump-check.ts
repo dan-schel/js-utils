@@ -1,41 +1,40 @@
-/* eslint-disable no-console */
 import { execSync } from "child_process";
 import fsp from "fs/promises";
 import semver from "semver";
 
-export async function main(args: string[]) {
-  const result = await bumpCheck(args);
+export async function main(io: ScriptIO = new RealScriptIO()) {
+  const result = await bumpCheck(io);
 
   if (result.error != null) {
-    console.log(`🔴 ${result.error}`);
+    io.log(`🔴 ${result.error}`);
     process.exit(1);
   } else if (result.skip != null) {
-    console.log(`🔵 ${result.skip}`);
+    io.log(`🔵 ${result.skip}`);
     process.exit(0);
   } else {
-    console.log(`🟢 ${result.success}`);
+    io.log(`🟢 ${result.success}`);
     process.exit(0);
   }
 }
 
-async function bumpCheck(args: string[]) {
-  const argsResult = interpretArgs(args);
+export async function bumpCheck(io: ScriptIO) {
+  const argsResult = interpretArgs(io);
 
   if (argsResult == null) {
     return { error: "Invalid arguments. Usage: bump-check [--ignore <regex>]" };
   }
 
   const { ignoreBranchRegex } = argsResult;
-  if (!isGitRepository()) {
+  if (!isGitRepository(io)) {
     return { error: "Not a git repository." };
   }
 
-  const defaultBranch = getDefaultBranchName();
+  const defaultBranch = getDefaultBranchName(io);
   if (defaultBranch == null) {
     return { error: "Unable to determine default branch." };
   }
 
-  const currentBranch = getCurrentBranchName();
+  const currentBranch = getCurrentBranchName(io);
   if (currentBranch == null) {
     return { error: "Unable to determine current branch." };
   }
@@ -46,14 +45,14 @@ async function bumpCheck(args: string[]) {
     return { skip: `On ignored branch (${currentBranch}).` };
   }
 
-  const versionResult = await getCurrentPackageJson(currentBranch);
+  const versionResult = await getCurrentPackageJson(io, currentBranch);
   if ("error" in versionResult) {
     return { error: versionResult.error };
   }
 
-  console.log(`Detected v${versionResult.version} on ${currentBranch}.`);
+  io.log(`Detected v${versionResult.version} on ${currentBranch}.`);
 
-  const masterPackageJson = getMasterPackageJson(defaultBranch);
+  const masterPackageJson = getMasterPackageJson(io, defaultBranch);
   if (masterPackageJson == null) {
     return {
       error: `Unable to fetch package.json from ${defaultBranch} branch.`,
@@ -65,7 +64,7 @@ async function bumpCheck(args: string[]) {
     return { error: masterVersionResult.error };
   }
 
-  console.log(`Detected v${masterVersionResult.version} on ${defaultBranch}.`);
+  io.log(`Detected v${masterVersionResult.version} on ${defaultBranch}.`);
 
   const bumped = semver.gt(versionResult.version, masterVersionResult.version);
   if (!bumped) {
@@ -79,45 +78,44 @@ async function bumpCheck(args: string[]) {
   }
 }
 
-function isGitRepository() {
+function isGitRepository(io: ScriptIO) {
   try {
-    execSync("git rev-parse --is-inside-work-tree", { stdio: "ignore" });
+    io.execSyncSilent("git rev-parse --is-inside-work-tree");
     return true;
   } catch {
     return false;
   }
 }
 
-function getDefaultBranchName() {
+function getDefaultBranchName(io: ScriptIO) {
   return execOrNull(
+    io,
     "git remote show origin | grep 'HEAD branch' | cut -d' ' -f5",
   )?.trim();
 }
 
-function getCurrentBranchName() {
-  return execOrNull("git branch --show-current")?.trim();
+function getCurrentBranchName(io: ScriptIO) {
+  return execOrNull(io, "git branch --show-current")?.trim();
 }
 
-async function getCurrentPackageJson(currentBranch: string) {
+async function getCurrentPackageJson(io: ScriptIO, currentBranch: string) {
   try {
-    return retrieveVersion(
-      await fsp.readFile("package.json", "utf-8"),
-      currentBranch,
-    );
+    return retrieveVersion(await io.readPackageJson(), currentBranch);
   } catch {
     return { error: "Unable to read package.json." as const };
   }
 }
 
-function getMasterPackageJson(defaultBranch: string) {
+function getMasterPackageJson(io: ScriptIO, defaultBranch: string) {
   return execOrNull(
+    io,
     `git fetch origin ${defaultBranch} --depth=1 && git show origin/${defaultBranch}:package.json`,
   );
 }
 
-function execOrNull(command: string): string | null {
+function execOrNull(io: ScriptIO, command: string): string | null {
   try {
-    return execSync(command, { stdio: "pipe" }).toString();
+    return io.execSync(command);
   } catch {
     return null;
   }
@@ -146,12 +144,45 @@ function retrieveVersion(jsonStr: string, branch: string) {
   }
 }
 
-function interpretArgs(args: string[]) {
+function interpretArgs(io: ScriptIO) {
+  const args = io.getArgs().slice(2);
+
   if (args.length === 0) {
     return { ignoreBranchRegex: null };
   } else if (args.length === 2 && args[0] === "--ignore") {
     return { ignoreBranchRegex: new RegExp(args[1]) };
   } else {
     return null; // Invalid arguments.
+  }
+}
+
+export abstract class ScriptIO {
+  abstract getArgs(): string[];
+  abstract execSync(command: string): string;
+  abstract execSyncSilent(command: string): void;
+  abstract readPackageJson(): Promise<string>;
+  abstract log(text: string): void;
+}
+
+class RealScriptIO extends ScriptIO {
+  override getArgs(): string[] {
+    return process.argv;
+  }
+
+  override execSync(command: string): string {
+    return execSync(command, { stdio: "pipe" }).toString();
+  }
+
+  override execSyncSilent(command: string) {
+    execSync(command, { stdio: "ignore" });
+  }
+
+  override readPackageJson(): Promise<string> {
+    return fsp.readFile("package.json", "utf-8");
+  }
+
+  override log(text: string): void {
+    // eslint-disable-next-line no-console
+    console.log(text);
   }
 }

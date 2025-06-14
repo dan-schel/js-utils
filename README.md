@@ -22,6 +22,6 @@ You can also configure it to ignore branches based on regex, e.g.:
 
 ```json
 "scripts": {
-  "bump-check": "bump-check --ignore \"^renovate\\/.*\""
+  "bump-check": "bump-check --ignore \"^renovate\\/\""
 }
 ```
