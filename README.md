@@ -7,7 +7,7 @@ A library for code common to my various NodeJS/Browser projects.
 ## Bump check
 
 This package includes a `bump-check` script which is useful if you're writing
-an NPM module and you want your CI to ensure the feature branch bumps the
+an NPM package and you want your CI to ensure the feature branch bumps the
 version in `package.json` before being merged.
 
 To use it, include the following in your `package.json`:
