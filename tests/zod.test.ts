@@ -46,6 +46,20 @@ describe("buildZodTransform", () => {
           message: "Custom error message",
         });
       });
+
+      describe("when supplied with an override error message", () => {
+        it("still uses the original error message", () => {
+          const transform = buildZodTransform(fn, "Custom override message");
+          const ctx = createMockZodContext();
+          transform("invalid", ctx);
+
+          expect(ctx.issues).toHaveLength(1);
+          expect(ctx.issues[0]).toEqual({
+            code: "custom",
+            message: "Custom error message",
+          });
+        });
+      });
     });
 
     describe("without a message", () => {
