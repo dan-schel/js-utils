@@ -12,7 +12,7 @@ type ZodRefinementCtx = { addIssue: (args: ZodAddIssueArgs) => void };
  * @param errorMessage Optional error message to use if no error message can be
  * extracted from the thrown error.
  */
-export function buildZodTransform<I, O>(
+export function buildZod3Transform<I, O>(
   transformFn: (input: I) => O,
   errorMessage: string = "Error thrown during transformation.",
 ) {
