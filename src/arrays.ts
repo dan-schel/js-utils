@@ -33,10 +33,13 @@ type EqualsFunc<T> = (a: T, b: T) => boolean;
  * @param equalsFunc The function to determine if two items should be considered
  * duplicates.
  */
-export function unique(array: string[]): string[];
-export function unique(array: number[]): number[];
-export function unique<T>(array: T[], equalsFunc?: EqualsFunc<T>): T[];
-export function unique<T>(array: T[], equalsFunc?: EqualsFunc<T>): T[] {
+export function unique(array: readonly string[]): string[];
+export function unique(array: readonly number[]): number[];
+export function unique<T>(array: readonly T[], equalsFunc?: EqualsFunc<T>): T[];
+export function unique<T>(
+  array: readonly T[],
+  equalsFunc?: EqualsFunc<T>,
+): T[] {
   if (equalsFunc == null) {
     return [...new Set(array)];
   }
@@ -62,10 +65,16 @@ export function unique<T>(array: T[], equalsFunc?: EqualsFunc<T>): T[] {
  * @param equalsFunc The function to determine if two items should be considered
  * duplicates.
  */
-export function areUnique(array: string[]): boolean;
-export function areUnique(array: number[]): boolean;
-export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean;
-export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean {
+export function areUnique(array: readonly string[]): boolean;
+export function areUnique(array: readonly number[]): boolean;
+export function areUnique<T>(
+  array: readonly T[],
+  equalsFunc?: EqualsFunc<T>,
+): boolean;
+export function areUnique<T>(
+  array: readonly T[],
+  equalsFunc?: EqualsFunc<T>,
+): boolean {
   return array.length === unique(array, equalsFunc).length;
 }
 
@@ -77,16 +86,22 @@ export function areUnique<T>(array: T[], equalsFunc?: EqualsFunc<T>): boolean {
  * @param equalsFunc The function to determine if two items should be considered
  * equal.
  */
-export function arraysMatch(a: string[], b: string[]): boolean;
-export function arraysMatch(a: number[], b: number[]): boolean;
+export function arraysMatch(
+  a: readonly string[],
+  b: readonly string[],
+): boolean;
+export function arraysMatch(
+  a: readonly number[],
+  b: readonly number[],
+): boolean;
 export function arraysMatch<T>(
-  a: T[],
-  b: T[],
+  a: readonly T[],
+  b: readonly T[],
   equalsFunc?: EqualsFunc<T>,
 ): boolean;
 export function arraysMatch<T>(
-  a: T[],
-  b: T[],
+  a: readonly T[],
+  b: readonly T[],
   equalsFunc?: EqualsFunc<T>,
 ): boolean {
   // If both arrays are empty, they match!
@@ -140,7 +155,7 @@ type Groups<Item, Group extends string | number> = {
  * @param groupSelector A function which selects the string/number to group by.
  */
 export function groupBy<Item, Group extends string | number>(
-  items: Item[],
+  items: readonly Item[],
   groupSelector: (item: Item) => Group,
 ): Groups<Item, Group> {
   const groups = new Map<Group, Item[]>();
