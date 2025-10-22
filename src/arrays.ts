@@ -172,3 +172,34 @@ export function groupBy<Item, Group extends string | number>(
     items,
   }));
 }
+
+/**
+ * Runs {@link isSameGroup} on each consecutive pair of {@link items}, and when
+ * it returns true, groups them together. Returns the array of groups.
+ * @param items The items to group.
+ * @param isSameGroup A function which returns true if two items should be grouped together.
+ */
+export function groupConsecutive<Item>(
+  items: readonly Item[],
+  isSameGroup: (a: Item, b: Item) => boolean,
+): Item[][] {
+  const groups: Item[][] = [];
+
+  let current: Item[] = [];
+  for (const item of items) {
+    if (current.length === 0) {
+      current.push(item);
+    } else if (isSameGroup(current[current.length - 1], item)) {
+      current.push(item);
+    } else {
+      groups.push(current);
+      current = [item];
+    }
+  }
+
+  if (current.length > 0) {
+    groups.push(current);
+  }
+
+  return groups;
+}
