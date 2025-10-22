@@ -1,4 +1,4 @@
-import { test, expect, it } from "vitest";
+import { test, expect, it, describe } from "vitest";
 import {
   areUnique,
   arraysMatch,
@@ -9,7 +9,6 @@ import {
   repeat,
   unique,
 } from "../src/index";
-import { describe } from "node:test";
 
 test("range", () => {
   expect(range(0, 4)).toStrictEqual([0, 1, 2, 3]);
@@ -192,7 +191,7 @@ test("groupBy", () => {
   ]);
 });
 
-describe("#groupConsecutive", () => {
+describe("groupConsecutive", () => {
   it("works", () => {
     const array = ["bacon", "bicycle", "panda", "koala", "kangaroo", "bear"];
     const isSameFirstLetter = (a: string, b: string) => a[0] === b[0];
