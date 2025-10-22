@@ -1,4 +1,4 @@
-import { test, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   areUnique,
   arraysMatch,
@@ -9,21 +9,26 @@ import {
   unique,
 } from "../src/index";
 
-test("range", () => {
-  expect(range(0, 4)).toStrictEqual([0, 1, 2, 3]);
-  expect(range(2, 6)).toStrictEqual([2, 3, 4, 5]);
-  expect(range(0, 0)).toStrictEqual([]);
-  expect(range(0, 1)).toStrictEqual([0]);
+describe("range", () => {
+  it("works", () => {
+    expect(range(0, 4)).toStrictEqual([0, 1, 2, 3]);
+    expect(range(2, 6)).toStrictEqual([2, 3, 4, 5]);
+    expect(range(0, 0)).toStrictEqual([]);
+    expect(range(0, 1)).toStrictEqual([0]);
+  });
 });
 
-test("repeat", () => {
-  expect(repeat(2, 4)).toStrictEqual([2, 2, 2, 2]);
-  expect(repeat("cat", 2)).toStrictEqual(["cat", "cat"]);
-  expect(repeat("dog", 1)).toStrictEqual(["dog"]);
-  expect(repeat("pizza", 0)).toStrictEqual([]);
+describe("repeat", () => {
+  it("works", () => {
+    expect(repeat(2, 4)).toStrictEqual([2, 2, 2, 2]);
+    expect(repeat("cat", 2)).toStrictEqual(["cat", "cat"]);
+    expect(repeat("dog", 1)).toStrictEqual(["dog"]);
+    expect(repeat("pizza", 0)).toStrictEqual([]);
+  });
 });
 
-test("unique (custom object)", () => {
+describe("unique", () => {
+  it("handles custom objects", () => {
   const obj = (a: string) => {
     return { x: a };
   };
@@ -43,23 +48,25 @@ test("unique (custom object)", () => {
   );
   expect(unique([obj("rat")], strEquals)).toStrictEqual([obj("rat")]);
   expect(unique([], strEquals)).toStrictEqual([]);
+  });
+
+  it("handles primitive strings", () => {
+    expect(unique(["cat", "dog", "cat", "cat"])).toStrictEqual(["cat", "dog"]);
+    expect(unique(["dog", "dog", "cat", "cat"])).toStrictEqual(["dog", "cat"]);
+    expect(unique(["rat", "dog", "fat", "cat"])).toStrictEqual([
+      "rat",
+      "dog",
+      "fat",
+      "cat",
+    ]);
+    expect(unique(["rat", "rat", "rat"])).toStrictEqual(["rat"]);
+    expect(unique(["rat"])).toStrictEqual(["rat"]);
+    expect(unique([])).toStrictEqual([]);
+  });
 });
 
-test("unique (primitive string)", () => {
-  expect(unique(["cat", "dog", "cat", "cat"])).toStrictEqual(["cat", "dog"]);
-  expect(unique(["dog", "dog", "cat", "cat"])).toStrictEqual(["dog", "cat"]);
-  expect(unique(["rat", "dog", "fat", "cat"])).toStrictEqual([
-    "rat",
-    "dog",
-    "fat",
-    "cat",
-  ]);
-  expect(unique(["rat", "rat", "rat"])).toStrictEqual(["rat"]);
-  expect(unique(["rat"])).toStrictEqual(["rat"]);
-  expect(unique([])).toStrictEqual([]);
-});
-
-test("areUnique (custom object)", () => {
+describe("areUnique", () => {
+  it("handles custom objects", () => {
   const obj = (a: string) => {
     return { x: a };
   };
@@ -79,18 +86,20 @@ test("areUnique (custom object)", () => {
   ).toStrictEqual(false);
   expect(areUnique([obj("rat")], strEquals)).toStrictEqual(true);
   expect(areUnique([], strEquals)).toStrictEqual(true);
+  });
+
+  it("handles primitive strings", () => {
+    expect(areUnique(["cat", "dog", "cat", "cat"])).toStrictEqual(false);
+    expect(areUnique(["dog", "dog", "cat", "cat"])).toStrictEqual(false);
+    expect(areUnique(["rat", "dog", "fat", "cat"])).toStrictEqual(true);
+    expect(areUnique(["rat", "rat", "rat"])).toStrictEqual(false);
+    expect(areUnique(["rat"])).toStrictEqual(true);
+    expect(areUnique([])).toStrictEqual(true);
+  });
 });
 
-test("areUnique (primitive string)", () => {
-  expect(areUnique(["cat", "dog", "cat", "cat"])).toStrictEqual(false);
-  expect(areUnique(["dog", "dog", "cat", "cat"])).toStrictEqual(false);
-  expect(areUnique(["rat", "dog", "fat", "cat"])).toStrictEqual(true);
-  expect(areUnique(["rat", "rat", "rat"])).toStrictEqual(false);
-  expect(areUnique(["rat"])).toStrictEqual(true);
-  expect(areUnique([])).toStrictEqual(true);
-});
-
-test("arraysMatch (custom object)", () => {
+describe("arraysMatch", () => {
+  it("handles custom objects", () => {
   const obj = (a: string) => {
     return { x: a };
   };
@@ -139,53 +148,58 @@ test("arraysMatch (custom object)", () => {
   expect(arraysMatch([], [], strEquals)).toStrictEqual(true);
 
   expect(arraysMatch([obj("hello")], [], strEquals)).toStrictEqual(false);
+  });
+
+  it("handles primitive strings", () => {
+    expect(arraysMatch(["cat", "dog"], ["cat", "dog"])).toStrictEqual(true);
+
+    expect(arraysMatch(["cat", "dog"], ["dog", "cat"])).toStrictEqual(true);
+
+    expect(arraysMatch(["cat", "dog"], ["dog", "cat", "cat"])).toStrictEqual(
+      true,
+    );
+
+    expect(arraysMatch(["cat", "dog", "dog"], ["dog", "cat"])).toStrictEqual(
+      true,
+    );
+
+    expect(arraysMatch(["cat", "frog", "dog"], ["dog", "cat"])).toStrictEqual(
+      false,
+    );
+
+    expect(arraysMatch(["cat", "dog"], ["dog", "cat", "frog"])).toStrictEqual(
+      false,
+    );
+
+    expect(arraysMatch([], [])).toStrictEqual(true);
+
+    expect(arraysMatch(["hello"], [])).toStrictEqual(false);
+  });
 });
 
-test("arraysMatch (primitive string)", () => {
-  expect(arraysMatch(["cat", "dog"], ["cat", "dog"])).toStrictEqual(true);
-
-  expect(arraysMatch(["cat", "dog"], ["dog", "cat"])).toStrictEqual(true);
-
-  expect(arraysMatch(["cat", "dog"], ["dog", "cat", "cat"])).toStrictEqual(
-    true,
-  );
-
-  expect(arraysMatch(["cat", "dog", "dog"], ["dog", "cat"])).toStrictEqual(
-    true,
-  );
-
-  expect(arraysMatch(["cat", "frog", "dog"], ["dog", "cat"])).toStrictEqual(
-    false,
-  );
-
-  expect(arraysMatch(["cat", "dog"], ["dog", "cat", "frog"])).toStrictEqual(
-    false,
-  );
-
-  expect(arraysMatch([], [])).toStrictEqual(true);
-
-  expect(arraysMatch(["hello"], [])).toStrictEqual(false);
-});
-
-test("removeIf", () => {
+describe("removeIf", () => {
+  it("works", () => {
   const array1 = ["bacon", "panda", "koala", "bicycle"];
   const modified1 = removeIf(array1, (i) => i.startsWith("b"));
   expect(array1).toStrictEqual(["panda", "koala"]);
   expect(modified1).toStrictEqual(true);
 
   const array2 = ["bacon", "panda", "koala", "bicycle"];
-  const modified2 = removeIf(array2, (i) => i.startsWith("a"));
-  expect(array2).toStrictEqual(["bacon", "panda", "koala", "bicycle"]);
-  expect(modified2).toStrictEqual(false);
+    const modified2 = removeIf(array2, (i) => i.startsWith("a"));
+    expect(array2).toStrictEqual(["bacon", "panda", "koala", "bicycle"]);
+    expect(modified2).toStrictEqual(false);
+  });
 });
 
-test("groupBy", () => {
-  const array = ["bacon", "panda", "koala", "bicycle"];
-  const groupByFirstLetter = (i: string) => i[0];
-  const grouped = groupBy(array, groupByFirstLetter);
-  expect(grouped).toStrictEqual([
-    { group: "b", items: ["bacon", "bicycle"] },
-    { group: "p", items: ["panda"] },
-    { group: "k", items: ["koala"] },
-  ]);
+describe("groupBy", () => {
+  it("works", () => {
+    const array = ["bacon", "panda", "koala", "bicycle"];
+    const groupByFirstLetter = (i: string) => i[0];
+    const grouped = groupBy(array, groupByFirstLetter);
+    expect(grouped).toStrictEqual([
+      { group: "b", items: ["bacon", "bicycle"] },
+      { group: "p", items: ["panda"] },
+      { group: "k", items: ["koala"] },
+    ]);
+  });
 });
