@@ -39,7 +39,10 @@ describe("tryParseUserTimeString", () => {
       hour: 13,
       minute: 57,
     });
-    expect(tryParseUserTimeString("1 pm")).toStrictEqual({ hour: 13, minute: 0 });
+    expect(tryParseUserTimeString("1 pm")).toStrictEqual({
+      hour: 13,
+      minute: 0,
+    });
     expect(tryParseUserTimeString("8:45 am")).toStrictEqual({
       hour: 8,
       minute: 45,
@@ -48,7 +51,10 @@ describe("tryParseUserTimeString", () => {
       hour: 8,
       minute: 45,
     });
-    expect(tryParseUserTimeString("8:45")).toStrictEqual({ hour: 8, minute: 45 });
+    expect(tryParseUserTimeString("8:45")).toStrictEqual({
+      hour: 8,
+      minute: 45,
+    });
     expect(tryParseUserTimeString("16:45")).toStrictEqual({
       hour: 16,
       minute: 45,

@@ -14,9 +14,9 @@ describe("kebabify", () => {
 
 describe("listifyAnd", () => {
   it("works", () => {
-    expect(listifyAnd(["cat", "dog", "frog", "cog", "fog", "log"])).toStrictEqual(
-      "cat, dog, frog, cog, fog, and log",
-    );
+    expect(
+      listifyAnd(["cat", "dog", "frog", "cog", "fog", "log"]),
+    ).toStrictEqual("cat, dog, frog, cog, fog, and log");
     expect(listifyAnd(["cat", "dog", "frog"])).toStrictEqual(
       "cat, dog, and frog",
     );
@@ -28,10 +28,12 @@ describe("listifyAnd", () => {
 
 describe("listifyOr", () => {
   it("works", () => {
-    expect(listifyOr(["cat", "dog", "frog", "cog", "fog", "log"])).toStrictEqual(
-      "cat, dog, frog, cog, fog, or log",
+    expect(
+      listifyOr(["cat", "dog", "frog", "cog", "fog", "log"]),
+    ).toStrictEqual("cat, dog, frog, cog, fog, or log");
+    expect(listifyOr(["cat", "dog", "frog"])).toStrictEqual(
+      "cat, dog, or frog",
     );
-    expect(listifyOr(["cat", "dog", "frog"])).toStrictEqual("cat, dog, or frog");
     expect(listifyOr(["cat", "dog"])).toStrictEqual("cat or dog");
     expect(listifyOr(["cat"])).toStrictEqual("cat");
     expect(listifyOr([])).toStrictEqual("");
