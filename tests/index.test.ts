@@ -38,7 +38,7 @@ test("all code files are exported", () => {
   }
 });
 
-function getDirsToCheck(dir: string = "src") {
+function getDirsToCheck(dir: string = "src"): string[] {
   const childDirs = fs
     .readdirSync(dir, { withFileTypes: true })
     .filter((x) => x.isDirectory())

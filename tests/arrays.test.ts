@@ -1,8 +1,9 @@
-import { test, expect } from "vitest";
+import { test, expect, it, describe } from "vitest";
 import {
   areUnique,
   arraysMatch,
   groupBy,
+  groupConsecutive,
   range,
   removeIf,
   repeat,
@@ -188,4 +189,29 @@ test("groupBy", () => {
     { group: "p", items: ["panda"] },
     { group: "k", items: ["koala"] },
   ]);
+});
+
+describe("groupConsecutive", () => {
+  it("works", () => {
+    const array = ["bacon", "bicycle", "panda", "koala", "kangaroo", "bear"];
+    const isSameFirstLetter = (a: string, b: string) => a[0] === b[0];
+    const grouped = groupConsecutive(array, isSameFirstLetter);
+    expect(grouped).toStrictEqual([
+      ["bacon", "bicycle"],
+      ["panda"],
+      ["koala", "kangaroo"],
+      ["bear"],
+    ]);
+  });
+
+  it("compares adjacent items", () => {
+    const array = ["a", "aa", "aaa", "aaaa", "aa", "aaa", "a"];
+    const isStepUp = (a: string, b: string) => b.length === a.length + 1;
+    const grouped = groupConsecutive(array, isStepUp);
+    expect(grouped).toStrictEqual([
+      ["a", "aa", "aaa", "aaaa"],
+      ["aa", "aaa"],
+      ["a"],
+    ]);
+  });
 });
