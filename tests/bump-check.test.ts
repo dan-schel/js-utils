@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bumpCheck, ScriptIO } from "../src/bump-check";
+import { bumpCheck, ScriptIO } from "../src/bump-check.js";
 
 class FakeScriptIO extends ScriptIO {
   readonly logs: string[] = [];
@@ -27,6 +27,7 @@ class FakeScriptIO extends ScriptIO {
     if (!(command in this._commands)) throw new Error();
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async readPackageJson(): Promise<string> {
     if (this._packageJson === null) throw new Error();
     return this._packageJson;

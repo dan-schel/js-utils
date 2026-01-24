@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { clamp, map, mapClamp } from "../src/index";
+import { clamp, map, mapClamp } from "../src/index.js";
 
 describe("clamp", () => {
   it("works", () => {

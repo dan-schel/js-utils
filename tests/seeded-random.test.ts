@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { seededRandom } from "../src/index";
+import { seededRandom } from "../src/index.js";
 
 describe("seededRandom", () => {
   it("always returns values between 0 and 1", () => {

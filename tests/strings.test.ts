@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { kebabify, listifyAnd, listifyOr } from "../src/index";
+import { kebabify, listifyAnd, listifyOr } from "../src/index.js";
 
 describe("kebabify", () => {
   it("works", () => {

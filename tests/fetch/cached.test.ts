@@ -1,11 +1,12 @@
 import { describe, it, expect, vi } from "vitest";
-import { Cached } from "../../src/index";
+import { Cached } from "../../src/index.js";
 
 describe("Cached", () => {
   it("should return the cached value until the cache duration passes", async () => {
     let currentTime = 0;
     let value = "original";
 
+    // eslint-disable-next-line @typescript-eslint/require-await
     const fetch = vi.fn(async () => value);
 
     const cached = new Cached({
@@ -48,6 +49,7 @@ describe("Cached", () => {
     let value: string | null = "original";
 
     const cached = new Cached({
+      // eslint-disable-next-line @typescript-eslint/require-await
       fetch: async () => {
         if (value == null) {
           throw new Error();
@@ -75,6 +77,7 @@ describe("Cached", () => {
     let value: string | null = "original";
 
     const cached = new Cached({
+      // eslint-disable-next-line @typescript-eslint/require-await
       fetch: async () => {
         if (value == null) {
           throw new Error();
@@ -98,6 +101,7 @@ describe("Cached", () => {
     const value: string | null = null;
 
     const cached = new Cached({
+      // eslint-disable-next-line @typescript-eslint/require-await
       fetch: async () => {
         if (value == null) {
           throw new Error();

@@ -6,7 +6,7 @@ import {
   NumberRange,
   parseFloatThrow,
   parseFloatNull,
-} from "../src/index";
+} from "../src/index.js";
 
 describe("parseIntThrow", () => {
   it("works", () => {

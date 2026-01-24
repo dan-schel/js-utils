@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { Polled, itsOk } from "../../src/index";
+import { Polled, itsOk } from "../../src/index.js";
 
 describe("Polled", () => {
   it("should have data after calling init()", async () => {
@@ -195,6 +195,7 @@ function setupPolled({
   const cancelScheduleFn = vi.fn();
 
   const polled = new Polled({
+    // eslint-disable-next-line @typescript-eslint/require-await
     fetch: async () => {
       if (value == null) {
         throw new Error();
