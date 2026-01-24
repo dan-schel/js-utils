@@ -15,6 +15,21 @@ const customRules = {
 
     // Warn about prettier violations.
     "prettier/prettier": "warn",
+
+    // Warn about non-null assertions.
+    "@typescript-eslint/no-non-null-assertion": "warn",
+
+    // Warn about relying on truthy/falsy values.
+    "@typescript-eslint/strict-boolean-expressions": [
+      "warn",
+      { allowString: false, allowNumber: false, allowNullableObject: false },
+    ],
+
+    // These errors are often just symptoms of another error, and obscure the
+    // actual error, so disable them.
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
   },
 };
 
@@ -23,7 +38,14 @@ export default tseslint.config(
     ignores: ["node_modules", "dist", "coverage"],
   },
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   prettier,
   customRules,
+  {
+    languageOptions: {
+      parserOptions: {
+        project: "./tsconfig.eslint.json",
+      },
+    },
+  },
 );
