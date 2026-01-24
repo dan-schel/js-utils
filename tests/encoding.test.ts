@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { base64, decimal, reencode, tryReencode } from "../src/index.js";
+import { base64, decimal, itsOk, reencode, tryReencode } from "../src/index.js";
 
 describe("reencode", () => {
   it("works", () => {
@@ -15,7 +15,7 @@ describe("reencode", () => {
       // Use tryReencode.
       const encoded = tryReencode(str, inputAlpha, base64);
       expect(encoded).not.toBeNull();
-      expect(tryReencode(encoded!, base64, inputAlpha)).toBe(str);
+      expect(tryReencode(itsOk(encoded), base64, inputAlpha)).toBe(str);
     }
   });
 

@@ -195,6 +195,7 @@ function setupPolled({
   const cancelScheduleFn = vi.fn();
 
   const polled = new Polled({
+    // eslint-disable-next-line @typescript-eslint/require-await
     fetch: async () => {
       if (value == null) {
         throw new Error();

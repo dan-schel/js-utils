@@ -86,7 +86,7 @@ export class Cached<T> {
    * Clear the cache and force the value to be re-fetched on next access,
    * regardless of age.
    */
-  async clear(): Promise<void> {
+  clear(): void {
     this._data = null;
   }
 

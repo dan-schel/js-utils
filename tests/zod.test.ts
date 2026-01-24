@@ -65,6 +65,7 @@ describe("buildZodTransform", () => {
 
     describe("without a message", () => {
       function fn(_input: string): number {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw "Something that isn't an error object";
       }
 

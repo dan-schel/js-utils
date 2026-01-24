@@ -27,6 +27,7 @@ class FakeScriptIO extends ScriptIO {
     if (!(command in this._commands)) throw new Error();
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async readPackageJson(): Promise<string> {
     if (this._packageJson === null) throw new Error();
     return this._packageJson;
