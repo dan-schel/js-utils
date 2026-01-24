@@ -1,7 +1,7 @@
 /**
  * Returns the same string is kebab-case form. Returned string is guaranteed to
  * only contain a-z, numbers, and dashes. All other symbols such as dollar
- * signs, and accented characters will be removed (for better or for worse).
+ * signs and accented characters will be removed (for better or for worse).
  * @param text The string to convert.
  */
 export function kebabify(text: string): string {
@@ -11,10 +11,30 @@ export function kebabify(text: string): string {
       .toLowerCase()
 
       // Replace spaces with dashes.
-      .replace(/\s/g, "-")
+      .replace(/\s+/g, "-")
 
       // Remove all other non ASCII letters/numbers.
       .replace(/[^a-z0-9-]/g, "")
+  );
+}
+
+/**
+ * Returns the same string in CONST_CASE form. Returned string is guaranteed to
+ * only contain A-Z, numbers, and underscores. All other symbols such as dollar
+ * signs and accented characters will be removed (for better or for worse).
+ * @param input The string to convert.
+ */
+export function constify(text: string): string {
+  return (
+    text
+      // Make uppercase.
+      .toUpperCase()
+
+      // Replace spaces with underscores.
+      .replace(/\s+/g, "_")
+
+      // Remove all other non ASCII letters/numbers.
+      .replace(/[^A-Z0-9_]/g, "")
   );
 }
 
