@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { kebabify, listifyAnd, listifyOr } from "../src/index.js";
+import {
+  kebabify,
+  listifyAnd,
+  listifyOr,
+  isPresent,
+  numberWiseSort,
+} from "../src/index.js";
 
 describe("kebabify", () => {
   it("works", () => {
@@ -37,5 +43,24 @@ describe("listifyOr", () => {
     expect(listifyOr(["cat", "dog"])).toStrictEqual("cat or dog");
     expect(listifyOr(["cat"])).toStrictEqual("cat");
     expect(listifyOr([])).toStrictEqual("");
+  });
+});
+
+describe("isPresent", () => {
+  it("works", () => {
+    expect(isPresent("hello")).toBe(true);
+    expect(isPresent("a")).toBe(true);
+    expect(isPresent("")).toBe(false);
+    expect(isPresent(null)).toBe(false);
+    expect(isPresent(undefined)).toBe(false);
+  });
+});
+
+describe("numberWiseSort", () => {
+  it("works", () => {
+    expect(numberWiseSort("item1", "item2")).toBeLessThan(0);
+    expect(numberWiseSort("item2", "item10")).toBeLessThan(0);
+    expect(numberWiseSort("item10", "item2")).toBeGreaterThan(0);
+    expect(numberWiseSort("item1", "item1")).toBe(0);
   });
 });
