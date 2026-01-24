@@ -34,7 +34,8 @@
     "prettier": "3.8.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.53.1",
-    "vitest": "3.2.4"
+    "vitest": "3.2.4",
+    "zod": "4.3.6"
   },
   "author": "dan-schel",
   "description": "A library for code common to my various NodeJS/Browser projects.",
