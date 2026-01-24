@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { Polled, itsOk } from "../../src/index";
+import { Polled, itsOk } from "../../src/index.js";
 
 describe("Polled", () => {
   it("should have data after calling init()", async () => {

@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { hour12To24, hour24To12, tryParseUserTimeString } from "../src/index";
+import {
+  hour12To24,
+  hour24To12,
+  tryParseUserTimeString,
+} from "../src/index.js";
 
 describe("hour12To24", () => {
   it("works", () => {

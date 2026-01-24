@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { base64, decimal, reencode, tryReencode } from "../src/index";
+import { base64, decimal, reencode, tryReencode } from "../src/index.js";
 
 describe("reencode", () => {
   it("works", () => {

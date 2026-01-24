@@ -8,7 +8,7 @@ import {
   removeIf,
   repeat,
   unique,
-} from "../src/index";
+} from "../src/index.js";
 
 describe("range", () => {
   it("works", () => {

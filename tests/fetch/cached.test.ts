@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { Cached } from "../../src/index";
+import { Cached } from "../../src/index.js";
 
 describe("Cached", () => {
   it("should return the cached value until the cache duration passes", async () => {

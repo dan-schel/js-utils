@@ -1,5 +1,5 @@
 import { expect, describe, it } from "vitest";
-import { buildZod3Transform } from "../src/zod";
+import { buildZodTransform } from "../src/zod.js";
 
 const zodNever = Object.freeze({ status: "aborted" }) as never;
 
@@ -7,7 +7,6 @@ function createMockZodContext() {
   type ZodIssue = { code: string; message: string };
   const issues: ZodIssue[] = [];
   return {
-    addIssue: (args: ZodIssue) => issues.push(args),
     issues,
   };
 }
@@ -19,7 +18,7 @@ describe("buildZodTransform", () => {
     }
 
     it("returns the transformed value and doesn't add any issues", () => {
-      const transform = buildZod3Transform(fn);
+      const transform = buildZodTransform(fn);
       const ctx = createMockZodContext();
       const result = transform("42", ctx);
 
@@ -35,7 +34,7 @@ describe("buildZodTransform", () => {
       }
 
       it("returns zodNever, and adds an issue with the error message", () => {
-        const transform = buildZod3Transform(fn);
+        const transform = buildZodTransform(fn);
         const ctx = createMockZodContext();
         const result = transform("invalid", ctx);
 
@@ -44,12 +43,13 @@ describe("buildZodTransform", () => {
         expect(ctx.issues[0]).toEqual({
           code: "custom",
           message: "Custom error message",
+          input: "invalid",
         });
       });
 
       describe("when supplied with an override error message", () => {
         it("still uses the original error message", () => {
-          const transform = buildZod3Transform(fn, "Custom override message");
+          const transform = buildZodTransform(fn, "Custom override message");
           const ctx = createMockZodContext();
           transform("invalid", ctx);
 
@@ -57,6 +57,7 @@ describe("buildZodTransform", () => {
           expect(ctx.issues[0]).toEqual({
             code: "custom",
             message: "Custom error message",
+            input: "invalid",
           });
         });
       });
@@ -68,7 +69,7 @@ describe("buildZodTransform", () => {
       }
 
       it("returns zodNever, and adds an issue with a default error message", () => {
-        const transform = buildZod3Transform(fn);
+        const transform = buildZodTransform(fn);
         const ctx = createMockZodContext();
         const result = transform("invalid", ctx);
 
@@ -77,12 +78,13 @@ describe("buildZodTransform", () => {
         expect(ctx.issues[0]).toEqual({
           code: "custom",
           message: "Error thrown during transformation.",
+          input: "invalid",
         });
       });
 
       describe("when supplied with an override error message", () => {
         it("returns zodNever, and adds an issue with the override error message", () => {
-          const transform = buildZod3Transform(fn, "Custom override message");
+          const transform = buildZodTransform(fn, "Custom override message");
           const ctx = createMockZodContext();
           const result = transform("invalid", ctx);
 
@@ -91,6 +93,7 @@ describe("buildZodTransform", () => {
           expect(ctx.issues[0]).toEqual({
             code: "custom",
             message: "Custom override message",
+            input: "invalid",
           });
         });
       });
