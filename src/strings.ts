@@ -64,3 +64,20 @@ export function listifyAnd(list: string[]): string {
 export function listifyOr(list: string[]): string {
   return listify(list, ", ", ", or ", " or ");
 }
+
+/**
+ * Returns true if the string is non-null, non-undefined, and has length > 0.
+ * @param str The string to check.
+ */
+export function isPresent(str: string | null | undefined): str is string {
+  return str != null && str.length > 0;
+}
+
+/**
+ * Sorts two strings in such a way that "item1" < "item 2" < "item10".
+ * @param a String 1.
+ * @param b String 2.
+ */
+export function numberWiseSort(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { numeric: true });
+}
