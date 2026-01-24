@@ -5,6 +5,7 @@ import {
   listifyOr,
   isPresent,
   numberWiseSort,
+  constify,
 } from "../src/index.js";
 
 describe("kebabify", () => {
@@ -15,6 +16,19 @@ describe("kebabify", () => {
     expect(kebabify("It's about time!")).toStrictEqual("its-about-time");
     expect(kebabify("Söme fǔnky letţèrs")).toStrictEqual("sme-fnky-letrs");
     expect(kebabify("n0mb3rs are f1ne")).toStrictEqual("n0mb3rs-are-f1ne");
+    expect(kebabify("double  space")).toStrictEqual("double-space");
+  });
+});
+
+describe("constify", () => {
+  it("works", () => {
+    expect(constify("")).toStrictEqual("");
+    expect(constify("whisper")).toStrictEqual("WHISPER");
+    expect(constify("Dog food")).toStrictEqual("DOG_FOOD");
+    expect(constify("It's about time!")).toStrictEqual("ITS_ABOUT_TIME");
+    expect(constify("Söme fǔnky letţèrs")).toStrictEqual("SME_FNKY_LETRS");
+    expect(constify("n0mb3rs are f1ne")).toStrictEqual("N0MB3RS_ARE_F1NE");
+    expect(constify("double  space")).toStrictEqual("DOUBLE_SPACE");
   });
 });
 
