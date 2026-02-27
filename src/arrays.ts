@@ -210,8 +210,8 @@ export function groupConsecutive<Item>(
  * to run in each situation.
  */
 export function compareArrays<A, B, Key extends string | number>(input: {
-  a: A[];
-  b: B[];
+  a: readonly A[];
+  b: readonly B[];
   compareBy: (a: A | B) => Key;
   onMatch?: (a: A, b: B) => void;
   onMissingFromA?: (b: B) => void;
