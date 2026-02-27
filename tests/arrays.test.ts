@@ -260,7 +260,8 @@ describe("compareArrays", () => {
     compareArrays({
       a,
       b,
-      compareBy: (item) => item.id,
+      aKeyFunc: (item) => item.id,
+      bKeyFunc: (item) => item.id,
       onMatch: (aItem, bItem) => matches.push({ a: aItem, b: bItem }),
       onMissingFromA: (bItem) => missingFromA.push(bItem),
       onMissingFromB: (aItem) => missingFromB.push(aItem),

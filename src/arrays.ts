@@ -212,15 +212,17 @@ export function groupConsecutive<Item>(
 export function compareArrays<A, B, Key extends string | number>(input: {
   a: readonly A[];
   b: readonly B[];
-  compareBy: (a: A | B) => Key;
+  aKeyFunc: (a: A) => Key;
+  bKeyFunc: (b: B) => Key;
   onMatch?: (a: A, b: B) => void;
   onMissingFromA?: (b: B) => void;
   onMissingFromB?: (a: A) => void;
 }) {
-  const { a, b, compareBy, onMatch, onMissingFromA, onMissingFromB } = input;
+  const { a, b, aKeyFunc, bKeyFunc, onMatch, onMissingFromA, onMissingFromB } =
+    input;
 
-  const aMap = new Map<Key, A>(a.map((item) => [compareBy(item), item]));
-  const bMap = new Map<Key, B>(b.map((item) => [compareBy(item), item]));
+  const aMap = new Map<Key, A>(a.map((item) => [aKeyFunc(item), item]));
+  const bMap = new Map<Key, B>(b.map((item) => [bKeyFunc(item), item]));
   const allKeys = new Set([...aMap.keys(), ...bMap.keys()]);
 
   for (const key of allKeys) {
