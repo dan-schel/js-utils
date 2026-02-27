@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   areUnique,
   arraysMatch,
+  compareArrays,
   groupBy,
   groupConsecutive,
   range,
@@ -235,5 +236,40 @@ describe("groupConsecutive", () => {
       ["aa", "aaa"],
       ["a"],
     ]);
+  });
+});
+
+describe("compareArrays", () => {
+  it("works", () => {
+    const a = [
+      { id: 1, val: "a" },
+      { id: 2, val: "b" },
+    ];
+    const b = [
+      { id: 2, val: "b_updated" },
+      { id: 3, val: "c" },
+    ];
+
+    const matches: {
+      a: { id: number; val: string };
+      b: { id: number; val: string };
+    }[] = [];
+    const missingFromA: { id: number; val: string }[] = [];
+    const missingFromB: { id: number; val: string }[] = [];
+
+    compareArrays({
+      a,
+      b,
+      compareBy: (item) => item.id,
+      onMatch: (aItem, bItem) => matches.push({ a: aItem, b: bItem }),
+      onMissingFromA: (bItem) => missingFromA.push(bItem),
+      onMissingFromB: (aItem) => missingFromB.push(aItem),
+    });
+
+    expect(matches).toStrictEqual([
+      { a: { id: 2, val: "b" }, b: { id: 2, val: "b_updated" } },
+    ]);
+    expect(missingFromA).toStrictEqual([{ id: 3, val: "c" }]);
+    expect(missingFromB).toStrictEqual([{ id: 1, val: "a" }]);
   });
 });
