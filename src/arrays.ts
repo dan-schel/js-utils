@@ -203,3 +203,36 @@ export function groupConsecutive<Item>(
 
   return groups;
 }
+
+/**
+ * Checks the two arrays for matches and differences.
+ * @param input The two arrays to compare, key to compare them by, and callbacks
+ * to run in each situation.
+ */
+export function compareArrays<A, B, Key extends string | number>(input: {
+  a: A[];
+  b: B[];
+  compareBy: (a: A | B) => Key;
+  onMatch?: (a: A, b: B) => void;
+  onMissingFromA?: (b: B) => void;
+  onMissingFromB?: (a: A) => void;
+}) {
+  const { a, b, compareBy, onMatch, onMissingFromA, onMissingFromB } = input;
+
+  const aMap = new Map<Key, A>(a.map((item) => [compareBy(item), item]));
+  const bMap = new Map<Key, B>(b.map((item) => [compareBy(item), item]));
+  const allKeys = new Set([...aMap.keys(), ...bMap.keys()]);
+
+  for (const key of allKeys) {
+    const aItem = aMap.get(key);
+    const bItem = bMap.get(key);
+
+    if (aItem != null && bItem != null) {
+      onMatch?.(aItem, bItem);
+    } else if (aItem != null) {
+      onMissingFromB?.(aItem);
+    } else if (bItem != null) {
+      onMissingFromA?.(bItem);
+    }
+  }
+}
