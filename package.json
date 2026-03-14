@@ -19,13 +19,9 @@
     "format-check": "prettier --check .",
     "bump-check": "npm run build && bin/bump-check --ignore \"^renovate\\/\""
   },
-  "dependencies": {
-    "semver": "7.7.3"
-  },
   "devDependencies": {
     "@eslint/js": "9.39.2",
     "@types/node": "24.10.9",
-    "@types/semver": "7.7.1",
     "@vitest/coverage-v8": "3.2.4",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
