@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import fsp from "fs/promises";
-import semver from "semver";
+import { parseIntThrow } from "./integers.js";
 
 export async function main(io: ScriptIO = new RealScriptIO()) {
   const result = await bumpCheck(io);
@@ -66,7 +66,11 @@ export async function bumpCheck(io: ScriptIO) {
 
   io.log(`Detected v${masterVersionResult.version} on ${defaultBranch}.`);
 
-  const bumped = semver.gt(versionResult.version, masterVersionResult.version);
+  const bumped = isFirstVersionHigher(
+    versionResult.version,
+    masterVersionResult.version,
+  );
+
   if (!bumped) {
     return {
       error: `Version not updated. Run 'npm version patch|minor|major' and commit the changes.`,
@@ -154,6 +158,26 @@ function interpretArgs(io: ScriptIO) {
   } else {
     return null; // Invalid arguments.
   }
+}
+
+function isFirstVersionHigher(first: string, second: string) {
+  // Only supports things like "1.0.5.12.4" or "1.0", not "1.0.0-beta" yet.
+  const firstPieces = first.split(".").map(parseIntThrow);
+  const secondPieces = second.split(".").map(parseIntThrow);
+
+  for (let i = 0; i < Math.max(firstPieces.length, secondPieces.length); i++) {
+    const firstPiece = firstPieces[i] ?? 0;
+    const secondPiece = secondPieces[i] ?? 0;
+
+    if (firstPiece > secondPiece) {
+      return true;
+    } else if (firstPiece < secondPiece) {
+      return false;
+    }
+  }
+
+  // They're equal.
+  return false;
 }
 
 export abstract class ScriptIO {
