@@ -1,5 +1,6 @@
 export * from "./arrays.js";
 export * from "./clamp.js";
+export * from "./deep-equal.js";
 export * from "./distance.js";
 export * from "./encoding.js";
 export * from "./fetch/index.js";
