@@ -1,4 +1,5 @@
 export * from "./arrays.js";
+export * from "./assert-never.js";
 export * from "./clamp.js";
 export * from "./deep-equals.js";
 export * from "./distance.js";
