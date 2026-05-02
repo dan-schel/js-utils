@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["scripts/**/*"],
+  "compilerOptions": {
+    "rootDir": "scripts",
+    "outDir": "dist/scripts",
+    "types": ["node"],
+    "declaration": false
+  }
+}

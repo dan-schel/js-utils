@@ -12,10 +12,10 @@
     "todo-check": "./bin/todo-check"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json && tsc -p tsconfig.scripts.json",
     "test": "vitest --run",
     "test-coverage": "vitest --run --coverage",
-    "lint": "eslint . --max-warnings 0 && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json --noEmit",
     "format": "prettier --write .",
     "format-check": "prettier --check .",
     "bump-check": "npm run build && bin/bump-check --ignore \"^renovate\\/\"",

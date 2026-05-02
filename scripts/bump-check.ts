@@ -1,6 +1,5 @@
-import { execSync } from "child_process";
-import fsp from "fs/promises";
-import { parseIntThrow } from "./integers.js";
+import { execSync } from "node:child_process";
+import fsp from "node:fs/promises";
 
 export async function main(io: ScriptIO = new RealScriptIO()) {
   const result = await bumpCheck(io);
@@ -156,14 +155,13 @@ function interpretArgs(io: ScriptIO) {
   } else if (args.length === 2 && args[0] === "--ignore") {
     return { ignoreBranchRegex: new RegExp(args[1]) };
   } else {
-    return null; // Invalid arguments.
+    return null;
   }
 }
 
 function isFirstVersionHigher(first: string, second: string) {
-  // Only supports things like "1.0.5.12.4" or "1.0", not "1.0.0-beta" yet.
-  const firstPieces = first.split(".").map(parseIntThrow);
-  const secondPieces = second.split(".").map(parseIntThrow);
+  const firstPieces = first.split(".").map(parseVersionPart);
+  const secondPieces = second.split(".").map(parseVersionPart);
 
   for (let i = 0; i < Math.max(firstPieces.length, secondPieces.length); i++) {
     const firstPiece = firstPieces[i] ?? 0;
@@ -176,8 +174,15 @@ function isFirstVersionHigher(first: string, second: string) {
     }
   }
 
-  // They're equal.
   return false;
+}
+
+function parseVersionPart(value: string) {
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed)) {
+    throw new Error(`Invalid version part: ${value}`);
+  }
+  return parsed;
 }
 
 export abstract class ScriptIO {

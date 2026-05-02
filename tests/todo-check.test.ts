@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ScriptIO, todoCheck } from "../src/todo-check.js";
+import { ScriptIO, todoCheck } from "../scripts/todo-check.js";
 
 class FakeScriptIO extends ScriptIO {
   readonly logs: string[] = [];

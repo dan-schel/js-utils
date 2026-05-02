@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-import { main } from "../dist/bump-check.js";
+import { main } from "../dist/scripts/bump-check.js";
 main();

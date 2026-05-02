@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bumpCheck, ScriptIO } from "../src/bump-check.js";
+import { bumpCheck, ScriptIO } from "../scripts/bump-check.js";
 
 class FakeScriptIO extends ScriptIO {
   readonly logs: string[] = [];
