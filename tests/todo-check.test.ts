@@ -91,7 +91,7 @@ describe("todo-check script", () => {
     const result = await todoCheck(io);
 
     expect(result).toEqual({
-      success: "No TODO violations found. (Australia/Melbourne)",
+      success: "Looks good! (Found 1 timed TODO.)",
     });
     expect(io.logs).toEqual([]);
   });
@@ -107,8 +107,7 @@ describe("todo-check script", () => {
     const result = await todoCheck(io);
 
     expect(result).toEqual({
-      error:
-        "Found 1 TODO violation(s). (Australia/Melbourne)\nsrc/file.ts:2 // TODO: fix this",
+      error: "Found 1 TODOs:\n\nsrc/file.ts:2",
     });
   });
 
@@ -123,8 +122,7 @@ describe("todo-check script", () => {
     const result = await todoCheck(io);
 
     expect(result).toEqual({
-      error:
-        "Found 1 TODO violation(s). (Australia/Melbourne)\nsrc/file.ts:1 // TODO 2026-05-02: remove workaround",
+      error: "Found 1 TODOs:\n\nsrc/file.ts:1",
     });
   });
 
@@ -142,7 +140,7 @@ describe("todo-check script", () => {
     const result = await todoCheck(io);
 
     expect(result).toEqual({
-      success: "No TODO violations found. (Australia/Melbourne)",
+      success: "Looks good! (Found 1 timed TODO.)",
     });
   });
 
@@ -161,8 +159,7 @@ describe("todo-check script", () => {
     const result = await todoCheck(io);
 
     expect(result).toEqual({
-      error:
-        "Found 1 TODO violation(s). (Australia/Melbourne)\nsrc/file.ts:1 // TODO: found",
+      error: "Found 1 TODOs:\n\nsrc/file.ts:1",
     });
   });
 

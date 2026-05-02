@@ -34,22 +34,22 @@ export async function todoCheck(io: ScriptIO) {
 
   const today = getTodayInTimezone(timezone);
   const ignorePatterns = await readTodoIgnore(io);
-  const violations = await findViolations(io, filePaths, ignorePatterns, today);
+  const result = await findViolations(io, filePaths, ignorePatterns, today);
 
-  if (violations.length === 0) {
-    return { success: `No TODO violations found. (${timezone})` };
+  if (result.violations.length === 0) {
+    return {
+      success: `Looks good! (Found ${result.timedTodoCount} timed ${result.timedTodoCount === 1 ? "TODO" : "TODOs"}.)`,
+    };
   }
 
-  const lines = violations.map(
-    (violation) =>
-      `${violation.filePath}:${violation.lineNumber} ${violation.text}`,
+  const lines = result.violations.map(
+    (violation) => `${violation.filePath}:${violation.lineNumber}`,
   );
 
   return {
-    error: [
-      `Found ${violations.length} TODO violation(s). (${timezone})`,
-      ...lines,
-    ].join("\n"),
+    error: [`Found ${result.violations.length} TODOs:`, "", ...lines].join(
+      "\n",
+    ),
   };
 }
 
@@ -60,13 +60,14 @@ async function findViolations(
   today: string,
 ) {
   const violations: Violation[] = [];
+  let timedTodoCount = 0;
 
   for (const filePath of filePaths) {
     if (shouldIgnore(filePath, ignorePatterns)) {
       continue;
     }
 
-    const content = await readTextFile(io, filePath);
+    const content = await readFileOrNull(io, filePath);
     if (content == null) {
       continue;
     }
@@ -77,6 +78,7 @@ async function findViolations(
       }
 
       for (const match of line.matchAll(/\bTODO (\d{4}-\d{2}-\d{2}):/g)) {
+        timedTodoCount += 1;
         if (match[1] <= today) {
           violations.push({
             filePath,
@@ -88,13 +90,12 @@ async function findViolations(
     }
   }
 
-  return violations;
+  return { violations, timedTodoCount };
 }
 
-async function readTextFile(io: ScriptIO, path: string) {
+async function readFileOrNull(io: ScriptIO, path: string) {
   try {
-    const content = await io.readFile(path);
-    return content.includes("\0") ? null : content;
+    return await io.readFile(path);
   } catch {
     return null;
   }
