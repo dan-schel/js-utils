@@ -2,6 +2,11 @@ import { execSync } from "node:child_process";
 import fsp from "node:fs/promises";
 import { basename, matchesGlob } from "node:path";
 
+const PLAIN_TODO_REGEX = /\bTODO: /;
+const TIMED_TODO_REGEX = /\bTODO (\d{4}-\d{2}-\d{2}):/g;
+const GIT_LIST_FILES_COMMAND =
+  "git ls-files --cached --others --exclude-standard -z";
+
 export async function main(io: ScriptIO = new RealScriptIO()) {
   const result = await todoCheck(io);
 
@@ -38,18 +43,16 @@ export async function todoCheck(io: ScriptIO) {
 
   if (result.violations.length === 0) {
     return {
-      success: `Looks good! (Found ${result.timedTodoCount} timed ${result.timedTodoCount === 1 ? "TODO" : "TODOs"}.)`,
+      success: `Looks good! (Found ${listTimedTodos(result.timedTodoCount)}.)`,
     };
   }
 
-  const lines = result.violations.map(
-    (violation) => `${violation.filePath}:${violation.lineNumber}`,
-  );
-
   return {
-    error: [`Found ${result.violations.length} TODOs:`, "", ...lines].join(
-      "\n",
-    ),
+    error: [
+      `Found ${result.violations.length} TODOs:`,
+      "",
+      ...result.violations,
+    ].join("\n"),
   };
 }
 
@@ -59,7 +62,7 @@ async function findViolations(
   ignorePatterns: string[],
   today: string,
 ) {
-  const violations: Violation[] = [];
+  const violations: string[] = [];
   let timedTodoCount = 0;
 
   for (const filePath of filePaths) {
@@ -73,24 +76,39 @@ async function findViolations(
     }
 
     for (const [index, line] of content.split(/\r?\n/u).entries()) {
-      if (/\bTODO: /.test(line)) {
-        violations.push({ filePath, lineNumber: index + 1, text: line.trim() });
-      }
+      const lineNumber = index + 1;
 
-      for (const match of line.matchAll(/\bTODO (\d{4}-\d{2}-\d{2}):/g)) {
-        timedTodoCount += 1;
-        if (match[1] <= today) {
-          violations.push({
-            filePath,
-            lineNumber: index + 1,
-            text: line.trim(),
-          });
-        }
+      const lineResult = inspectLine(line, today);
+      timedTodoCount += lineResult.timedTodoCount;
+
+      if (lineResult.hasViolation) {
+        violations.push(formatViolation(filePath, lineNumber));
       }
     }
   }
 
   return { violations, timedTodoCount };
+}
+
+function inspectLine(line: string, today: string) {
+  const timedTodos = getTimedTodos(line);
+  return {
+    timedTodoCount: timedTodos.length,
+    hasViolation:
+      PLAIN_TODO_REGEX.test(line) || timedTodos.some((date) => date <= today),
+  };
+}
+
+function getTimedTodos(line: string) {
+  return Array.from(line.matchAll(TIMED_TODO_REGEX), (match) => match[1]);
+}
+
+function formatViolation(filePath: string, lineNumber: number) {
+  return `${filePath}:${lineNumber}`;
+}
+
+function listTimedTodos(count: number) {
+  return `${count} timed ${count === 1 ? "TODO" : "TODOs"}`;
 }
 
 async function readFileOrNull(io: ScriptIO, path: string) {
@@ -149,19 +167,29 @@ function isGitRepository(io: ScriptIO) {
 }
 
 async function getCandidateFilePaths(io: ScriptIO) {
-  if (isGitRepository(io)) {
-    try {
-      return io
-        .execSync("git ls-files --cached --others --exclude-standard -z")
-        .split("\0")
-        .filter((filePath) => filePath !== "");
-    } catch {
-      return null;
-    }
+  const gitFiles = getGitCandidateFilePaths(io);
+  if (gitFiles != null) {
+    return gitFiles;
   }
 
   try {
-    return await io.listFiles(".");
+    return (await io.listFiles(".")).sort();
+  } catch {
+    return null;
+  }
+}
+
+function getGitCandidateFilePaths(io: ScriptIO) {
+  if (!isGitRepository(io)) {
+    return null;
+  }
+
+  try {
+    return io
+      .execSync(GIT_LIST_FILES_COMMAND)
+      .split("\0")
+      .filter((filePath) => filePath !== "")
+      .sort();
   } catch {
     return null;
   }
@@ -210,12 +238,6 @@ function getTodayInTimezone(timezone: string) {
 
   return `${year}-${month}-${day}`;
 }
-
-type Violation = {
-  filePath: string;
-  lineNumber: number;
-  text: string;
-};
 
 export abstract class ScriptIO {
   abstract getArgs(): string[];
