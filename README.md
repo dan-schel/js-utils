@@ -25,3 +25,19 @@ You can also configure it to ignore branches based on regex, e.g.:
   "bump-check": "bump-check --ignore \"^renovate\\/\""
 }
 ```
+
+## TODO check
+
+This package also includes a `todo-check` script for CI. It exits with code 1
+when it finds a plain `TODO:` marker or a dated `TODO YYYY-MM-DD:` marker
+which has expired (or expires today).
+
+To use it, include the following in your `package.json`:
+
+```json
+"scripts": {
+  "todo-check": "todo-check --tz Australia/Melbourne"
+}
+```
+
+It will ignore `.gitignored` files (if applicable). You can also create a `.todoignore` to add additional files if desired.

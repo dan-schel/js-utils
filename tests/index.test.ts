@@ -3,8 +3,9 @@ import path from "path";
 import { assert, test } from "vitest";
 
 const exceptions = [
-  // Exported as a binary in bin/bump-check.
+  // Exported as a binaries, e.g. bin/bump-check.
   "src/bump-check.ts",
+  "src/todo-check.ts",
 ];
 
 test("all code files are exported", () => {
