@@ -17,6 +17,7 @@ export function apply<T>(item: T, func: (item: T) => void): T {
  * @param value The value that might be null.
  */
 export function nonNull<T>(value: T | null): value is T {
+  // TODO: Stuff.
   return value != null;
 }
 
