@@ -22,17 +22,17 @@
     "todo-check": "npm run build && bin/todo-check --tz Australia/Melbourne --extensions .ts .md --ignore \"^renovate\\/\""
   },
   "devDependencies": {
-    "@eslint/js": "9.39.2",
-    "@types/node": "24.10.9",
+    "@eslint/js": "9.39.4",
+    "@types/node": "24.12.4",
     "@vitest/coverage-v8": "3.2.4",
-    "eslint": "9.39.2",
+    "eslint": "9.39.4",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
-    "prettier": "3.8.0",
+    "prettier": "3.8.3",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.53.1",
+    "typescript-eslint": "8.59.4",
     "vitest": "3.2.4",
-    "zod": "4.3.6"
+    "zod": "4.4.3"
   },
   "author": "dan-schel",
   "description": "A library for code common to my various NodeJS/Browser projects.",
