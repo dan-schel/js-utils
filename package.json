@@ -22,10 +22,10 @@
     "todo-check": "npm run build && bin/todo-check --tz Australia/Melbourne --extensions .ts .md --ignore \"^renovate\\/\""
   },
   "devDependencies": {
-    "@eslint/js": "9.39.4",
+    "@eslint/js": "10.0.1",
     "@types/node": "24.12.4",
     "@vitest/coverage-v8": "4.1.7",
-    "eslint": "9.39.4",
+    "eslint": "10.4.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "prettier": "3.8.3",
