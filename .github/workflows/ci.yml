@@ -78,7 +78,7 @@ jobs:
       - name: Confirm version bump
         run: npm run bump-check
   todo:
-    name: No expired TODOs
+    name: No outstanding TODOs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

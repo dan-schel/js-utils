@@ -36,8 +36,8 @@ To use it, include the following in your `package.json`:
 
 ```json
 "scripts": {
-  "todo-check": "todo-check --tz Australia/Melbourne"
+  "todo-check": "todo-check --tz Australia/Melbourne --extensions .ts .md --ignore \"^renovate\\/\""
 }
 ```
 
-It will ignore `.gitignored` files (if applicable). You can also create a `.todoignore` to add additional files if desired.
+It will ignore `.gitignored` files, and therefore expects to be run inside a git repository only.

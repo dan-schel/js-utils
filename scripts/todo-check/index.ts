@@ -57,7 +57,7 @@ export async function generateTodosReport(io: ScriptIO) {
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      const match = /\sTODO([^:]{0,16}):/.exec(line);
+      const match = /\sTODO([^:]{1,16}):/.exec(line);
       if (match != null) {
         const location = `${file}:${i + 1}:${match.index + 2}`;
         const dateBit = match[1]?.trim() ?? null;
