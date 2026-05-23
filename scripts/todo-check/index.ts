@@ -130,7 +130,7 @@ function interpretArgs(io: ScriptIO) {
   // Validate.
   const tzArr = byType["tz"];
   const extensionsArr = byType["extensions"];
-  const ignoreRaw = byType["ignore-branch"];
+  const ignoreRaw = byType["ignore"];
   if (tzArr.length !== 1) {
     return { error: `Expected exactly one timezone. ${usage}` };
   }
