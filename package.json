@@ -18,8 +18,8 @@
     "lint": "eslint . --max-warnings 0 && tsc -p tsconfig.json --noEmit && tsc -p scripts/tsconfig.json --noEmit",
     "format": "prettier --write .",
     "format-check": "prettier --check .",
-    "bump-check": "npm run build && bin/bump-check --ignore-branch \"^renovate\\/\"",
-    "todo-check": "npm run build && bin/todo-check --tz Australia/Melbourne --extensions .ts .md --ignore-branch \"^renovate\\/\""
+    "bump-check": "npm run build && bin/bump-check --ignore \"^renovate\\/\"",
+    "todo-check": "npm run build && bin/todo-check --tz Australia/Melbourne --extensions .ts .md --ignore \"^renovate\\/\""
   },
   "devDependencies": {
     "@eslint/js": "9.39.2",

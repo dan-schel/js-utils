@@ -20,7 +20,9 @@ export async function bumpCheck(io: ScriptIO) {
   const argsResult = interpretArgs(io);
 
   if (argsResult == null) {
-    return { error: "Invalid arguments. Usage: bump-check [--ignore <regex>]" };
+    return {
+      error: "Invalid arguments. Usage: bump-check [--ignore <regex>]",
+    };
   }
 
   const { ignoreBranchRegex } = argsResult;
@@ -152,7 +154,7 @@ function interpretArgs(io: ScriptIO) {
 
   if (args.length === 0) {
     return { ignoreBranchRegex: null };
-  } else if (args.length === 2 && args[0] === "--ignore-branch") {
+  } else if (args.length === 2 && args[0] === "--ignore") {
     return { ignoreBranchRegex: new RegExp(args[1]) };
   } else {
     return null;

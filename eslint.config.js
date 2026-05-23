@@ -8,7 +8,7 @@ const customRules = {
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
 
     // Require === and !==, except when comparing to null.
-    eqeqeq: ["warn", "always", { null: "ignore" }],
+    "eqeqeq": ["warn", "always", { null: "ignore" }],
 
     // Warn on console.log uses, but allow console.warn.
     "no-console": ["warn", { allow: ["warn", "error"] }],

@@ -7,6 +7,9 @@ export async function main(io: ScriptIO = new RealScriptIO()) {
   if (result.error != null) {
     io.log(`🔴 ${result.error}`);
     process.exit(1);
+  } else if (result.skip != null) {
+    io.log(`🔵 ${result.skip}`);
+    process.exit(0);
   } else if (result.fail != null) {
     const count = result.fail.violations.length;
     io.log(`🔴 Found ${count} ${count === 1 ? "TODO" : "TODOs"} to address:\n`);
@@ -31,6 +34,13 @@ export async function generateTodosReport(io: ScriptIO) {
   const argsResult = interpretArgs(io);
   if (argsResult.error != null) return { error: argsResult.error };
   const args = argsResult.args;
+
+  const branchResult = getCurrentBranchName(io);
+  if (branchResult.error != null) return { error: branchResult.error };
+  const currentBranch = branchResult.branch;
+  if (args.ignore != null && args.ignore.test(currentBranch)) {
+    return { skip: `On ignored branch (${currentBranch}).` };
+  }
 
   const filesResult = getFilesToScan(io);
   if (filesResult.error != null) return { error: filesResult.error };
@@ -94,14 +104,14 @@ function interpretArgs(io: ScriptIO) {
     "Usage: todo-check " +
     "--tz <timezone> " +
     "--extensions <.ext1> <.ext2> " +
-    "[--ignore-branch <regex>]";
+    "[--ignore <regex>]";
 
   // Extract.
   let currentFlag: string | null = null;
   const byType: Record<string, string[]> = {
-    "tz": [],
-    "extensions": [],
-    "ignore-branch": [],
+    tz: [],
+    extensions: [],
+    ignore: [],
   };
   for (const arg of args) {
     if (arg.startsWith("--")) {
@@ -120,7 +130,7 @@ function interpretArgs(io: ScriptIO) {
   // Validate.
   const tzArr = byType["tz"];
   const extensionsArr = byType["extensions"];
-  const branchRaw = byType["ignore-branch"];
+  const ignoreRaw = byType["ignore-branch"];
   if (tzArr.length !== 1) {
     return { error: `Expected exactly one timezone. ${usage}` };
   }
@@ -130,15 +140,15 @@ function interpretArgs(io: ScriptIO) {
   if (extensionsArr.some((e) => !e.startsWith("."))) {
     return { error: `Extensions should always start with a dot. ${usage}` };
   }
-  if (branchRaw.length > 1) {
-    return { error: `Expected at most one --ignore-branch flag. ${usage}` };
+  if (ignoreRaw.length > 1) {
+    return { error: `Expected at most one --ignore flag. ${usage}` };
   }
 
   // Return.
   const tz = tzArr[0];
   const extensions = extensionsArr.map((e) => e.toLowerCase().slice(1));
-  const branchRegex = branchRaw.length === 1 ? new RegExp(branchRaw[0]) : null;
-  return { args: { tz, extensions, ignoreBranchRegex: branchRegex } };
+  const ignore = ignoreRaw.length === 1 ? new RegExp(ignoreRaw[0]) : null;
+  return { args: { tz, extensions, ignore: ignore } };
 }
 
 function getFilesToScan(io: ScriptIO) {
@@ -165,6 +175,14 @@ function isGitRepository(io: ScriptIO) {
     return true;
   } catch {
     return false;
+  }
+}
+
+function getCurrentBranchName(io: ScriptIO) {
+  try {
+    return { branch: io.execSync("git branch --show-current").trim() };
+  } catch {
+    return { error: "Unable to determine current branch." };
   }
 }
 
