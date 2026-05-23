@@ -1,5 +1,5 @@
-import { execSync } from "node:child_process";
-import fsp from "node:fs/promises";
+import { execSync } from "child_process";
+import fsp from "fs/promises";
 
 export async function main(io: ScriptIO = new RealScriptIO()) {
   const result = await bumpCheck(io);
@@ -152,7 +152,7 @@ function interpretArgs(io: ScriptIO) {
 
   if (args.length === 0) {
     return { ignoreBranchRegex: null };
-  } else if (args.length === 2 && args[0] === "--ignore") {
+  } else if (args.length === 2 && args[0] === "--ignore-branch") {
     return { ignoreBranchRegex: new RegExp(args[1]) };
   } else {
     return null;
