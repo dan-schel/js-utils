@@ -1,6 +1,6 @@
 {
   "name": "@dan-schel/js-utils",
-  "version": "4.13.0",
+  "version": "4.14.0",
   "type": "module",
   "files": [
     "dist"
@@ -8,16 +8,18 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "bump-check": "./bin/bump-check"
+    "bump-check": "./bin/bump-check",
+    "todo-check": "./bin/todo-check"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json && tsc -p scripts/tsconfig.json",
     "test": "vitest --run",
     "test-coverage": "vitest --run --coverage",
-    "lint": "eslint . --max-warnings 0 && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0 && tsc -p tsconfig.json --noEmit && tsc -p scripts/tsconfig.json --noEmit",
     "format": "prettier --write .",
     "format-check": "prettier --check .",
-    "bump-check": "npm run build && bin/bump-check --ignore \"^renovate\\/\""
+    "bump-check": "npm run build && bin/bump-check --ignore \"^renovate\\/\"",
+    "todo-check": "npm run build && bin/todo-check --tz Australia/Melbourne --extensions .ts .md --ignore \"^renovate\\/\""
   },
   "devDependencies": {
     "@eslint/js": "9.39.2",

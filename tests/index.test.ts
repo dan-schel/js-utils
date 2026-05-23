@@ -2,11 +2,6 @@ import fs from "fs";
 import path from "path";
 import { assert, test } from "vitest";
 
-const exceptions = [
-  // Exported as a binary in bin/bump-check.
-  "src/bump-check.ts",
-];
-
 test("all code files are exported", () => {
   for (const dir of getDirsToCheck()) {
     // Step 1: Check every folder in src has an index.ts file.
@@ -52,8 +47,7 @@ function getNonIndexTypescriptFiles(dir: string) {
     .filter(
       (x) => x.isFile() && x.name.endsWith(".ts") && x.name !== "index.ts",
     )
-    .map((f) => path.join(dir, f.name))
-    .filter((x) => !exceptions.includes(x));
+    .map((f) => path.join(dir, f.name));
 }
 
 function getSubdirectories(dir: string) {
