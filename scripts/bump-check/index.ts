@@ -20,9 +20,7 @@ export async function bumpCheck(io: ScriptIO) {
   const argsResult = interpretArgs(io);
 
   if (argsResult == null) {
-    return {
-      error: "Invalid arguments. Usage: bump-check [--ignore <regex>]",
-    };
+    return { error: "Invalid arguments. Usage: bump-check [--ignore <regex>]" };
   }
 
   const { ignoreBranchRegex } = argsResult;
@@ -179,6 +177,7 @@ function isFirstVersionHigher(first: string, second: string) {
   return false;
 }
 
+// Can't use parseIntThrow as it's outside the "scripts" folder (tsconfig).
 function parseVersionPart(value: string) {
   const parsed = Number.parseInt(value, 10);
   if (Number.isNaN(parsed)) {
