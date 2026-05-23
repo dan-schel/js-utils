@@ -206,7 +206,6 @@ describe("todo-check script", () => {
     it("fails gracefully", async () => {
       const io = scriptIO({
         commands: {
-          //...isGitRepository(),
           ...getCurrentBranchName("feature-branch"),
           ...getFiles([]),
         },
@@ -221,7 +220,6 @@ describe("todo-check script", () => {
       const io = scriptIO({
         commands: {
           ...isGitRepository(),
-          //...getCurrentBranchName("feature-branch"),
           ...getFiles([]),
         },
       });

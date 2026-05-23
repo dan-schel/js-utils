@@ -169,7 +169,7 @@ function getFilesToScan(io: ScriptIO) {
 
     return { files };
   } catch {
-    return { error: "Not a git repository." };
+    return { error: "Unable to list the files within this git repository." };
   }
 }
 
