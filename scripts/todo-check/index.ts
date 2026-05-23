@@ -55,6 +55,10 @@ export async function generateTodosReport(io: ScriptIO) {
     const content = await io.readFile(file);
     const lines = content.split("\n");
 
+    if (lines.some((line) => line.includes("TODO-CHECK-IGNORE"))) {
+      continue;
+    }
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const match = /\sTODO([^:]{1,16})?:/.exec(line);
