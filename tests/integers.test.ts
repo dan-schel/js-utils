@@ -103,6 +103,7 @@ describe("posMod", () => {
     expect(posMod(-4.1, 4)).toBeCloseTo(3.9, 8);
     expect(posMod(-2.2, 4)).toBeCloseTo(1.8, 8);
     expect(posMod(-0.001, 4)).toBeCloseTo(3.999, 8);
+    expect(posMod(-0, 4)).toStrictEqual(0);
   });
 });
 

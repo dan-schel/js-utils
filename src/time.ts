@@ -1,4 +1,5 @@
-import { parseIntThrow, posMod } from "./integers.js";
+import { parseIntThrow } from "./integers.js";
+import { posMod } from "./pos-mod.js";
 
 /** An object with an hour and minute. */
 export type Time = {

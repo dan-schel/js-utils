@@ -8,6 +8,7 @@ export * from "./fetch/index.js";
 export * from "./scope.js";
 export * from "./seeded-random.js";
 export * from "./integers.js";
+export * from "./pos-mod.js";
 export * from "./strings.js";
 export * from "./time.js";
 export * from "./uuid.js";
