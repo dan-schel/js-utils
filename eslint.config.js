@@ -10,8 +10,8 @@ const customRules = {
     // Require === and !==, except when comparing to null.
     "eqeqeq": ["warn", "always", { null: "ignore" }],
 
-    // Warn on console.log uses, but allow console.warn.
-    "no-console": ["warn", { allow: ["warn", "error"] }],
+    // Disallow console.log, console.warn, etc.
+    "no-console": "warn",
 
     // Warn about prettier violations.
     "prettier/prettier": "warn",

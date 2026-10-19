@@ -13,13 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - id: version_check
+        shell: bash
+        run: |
+          changed="$(bash ./.github/scripts/version-changed.sh "${{ github.event.before }}")"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v6
+        if: steps.version_check.outputs.changed == 'true'
         with:
           node-version: "24.16.0"
           registry-url: "https://registry.npmjs.org"
-      - name: Install modules
+      - if: steps.version_check.outputs.changed == 'true'
         run: npm ci
-      - name: Build
+      - if: steps.version_check.outputs.changed == 'true'
         run: npm run build
-      - name: Publish to npm
+      - if: steps.version_check.outputs.changed == 'true'
         run: npm publish
