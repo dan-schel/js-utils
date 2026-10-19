@@ -33,7 +33,7 @@ jobs:
           node-version: 24.22.0
       - run: npm ci
       - run: npm run test-coverage
-      - uses: codecov/codecov-action@v6.0.1
+      - uses: codecov/codecov-action@v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: dan-schel/js-utils
